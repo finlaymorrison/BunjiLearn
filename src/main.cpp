@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
     Trainer network_trainer(&network, &dataset, &loss, 0.005);
 
-    network_trainer.fit(1000);
+    network_trainer.fit(1000000);
     
     return 0;
 }
