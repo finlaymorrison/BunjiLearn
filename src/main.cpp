@@ -22,9 +22,9 @@ int main(int argc, char **argv)
     Network network;
 
     Flatten f0(1, 28, 28);
-    Dense d0(784, 32);
+    Dense d0(784, 128);
     Sigmoid a0;
-    Dense d1(32, 10);
+    Dense d1(128, 10);
     Softmax a1;
 
     network.add_layer(&f0);
@@ -35,9 +35,9 @@ int main(int argc, char **argv)
 
     SquaredError loss;
 
-    Trainer network_trainer(&network, &dataset, &loss, 0.0005);
+    Trainer network_trainer(&network, &dataset, &loss, 0.005);
 
-    network_trainer.fit(10);
+    network_trainer.fit(1000);
     
     return 0;
 }

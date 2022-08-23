@@ -90,14 +90,14 @@ void Dense::apply_gradients(double learn_rate)
         for (int j = 0; j < weights[i].size(); ++j)
         {
             weights[i][j] -= deriv_weights[i][j] * learn_rate;
-            deriv_weights[i][i] = 0;
+            deriv_weights[i][i] = 0.0;
         }
     }
 
     for (int i = 0; i < biases.size(); ++i)
     {
         biases[i] -= deriv_biases[i] * learn_rate;
-        deriv_biases[i] = 0;
+        deriv_biases[i] = 0.0;
     }
 }
 

@@ -4,6 +4,7 @@ project(ml_library VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS "-O3")
 
 configure_file(config.h.in config.h)
 

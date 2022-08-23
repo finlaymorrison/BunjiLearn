@@ -124,10 +124,9 @@ Tensor Softmax::backward_pass(const Tensor &input, const Tensor &output_derivati
 
     for (int i = 0; i < inputs; i++)
     {
-        input_derivatives[0][0][i] = 0.0;
         for (int j = 0; j < inputs; j++)
         {
-            input_derivatives[0][0][j] += activations[0][0][j] * ((j == i ? 1 : 0) - activations[0][0][i]);
+            input_derivatives[0][0][j] += output_derivatives[0][0][i] * activations[0][0][i] * ((j == i ? 1.0 : 0.0) - activations[0][0][j]);
         }
     }
     
