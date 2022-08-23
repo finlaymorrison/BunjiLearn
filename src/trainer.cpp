@@ -24,7 +24,7 @@ double Trainer::train_pass()
         std::pair<Tensor, Tensor> example = dataset->train(i);
         total_loss += train_example(example.first, example.second);
     }
-    network->apply_gradients(learn_rate);
+    network->apply_gradients(learn_rate / dataset->train_len());
     return total_loss / dataset->train_len();
 }
 
