@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
     SquaredError loss;
 
-    Trainer network_trainer(&network, &dataset, &loss, 0.001);
+    Trainer network_trainer(&network, &dataset, &loss, 0.0005);
 
     network_trainer.fit(10);
     

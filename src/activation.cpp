@@ -20,11 +20,9 @@ Tensor ReLU::forward_pass(const Tensor &input)
 
 Tensor ReLU::backward_pass(const Tensor &input, const Tensor &output_derivatives)
 {
-    std::cout << "relu backprop" << std::endl;
     int inputs = input[0][0].size();
     Tensor input_derivatives({{{}}});
     input_derivatives[0][0].resize(inputs);
-    std::cout << output_derivatives[0][0].size() << std::endl;
 
     for (int i = 0; i < inputs; i++)
     {
@@ -53,11 +51,9 @@ Tensor Sigmoid::forward_pass(const Tensor &input)
 
 Tensor Sigmoid::backward_pass(const Tensor &input, const Tensor &output_derivatives)
 {
-    std::cout << "sigmoid backprop" << std::endl;
     int inputs = input[0][0].size();
     Tensor input_derivatives({{{}}});
     input_derivatives[0][0].resize(inputs);
-    std::cout << output_derivatives[0][0].size() << std::endl;
 
     for (int i = 0; i < inputs; i++)
     {
@@ -122,22 +118,19 @@ Tensor Softmax::forward_pass(const Tensor &input)
 
 Tensor Softmax::backward_pass(const Tensor &input, const Tensor &output_derivatives)
 {
-    std::cout << "softmax backprop" << std::endl;
     int inputs = input[0][0].size();
     Tensor input_derivatives({{{}}});
     input_derivatives[0][0].resize(inputs);
-    std::cout << output_derivatives[0][0].size() << std::endl;
-
-    std::cout << "\t\t" << inputs << std::endl;
 
     for (int i = 0; i < inputs; i++)
     {
         input_derivatives[0][0][i] = 0.0;
         for (int j = 0; j < inputs; j++)
         {
-            input_derivatives[0][0][i] += activations[0][0][j] * ((j == i ? 1 : 0) - activations[0][0][i]);
+            input_derivatives[0][0][j] += activations[0][0][j] * ((j == i ? 1 : 0) - activations[0][0][i]);
         }
     }
+    
 
     return input_derivatives;
 }

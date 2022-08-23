@@ -21,7 +21,6 @@ double Trainer::train_pass()
     double total_loss = 0.0;
     for (int i = 0; i < dataset->train_len(); ++i)
     {
-        std::cout << "\tTraining example: " << i << std::endl;
         std::pair<Tensor, Tensor> example = dataset->train(i);
         total_loss += train_example(example.first, example.second);
     }

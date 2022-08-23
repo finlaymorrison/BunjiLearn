@@ -50,13 +50,9 @@ Tensor Dense::forward_pass(const Tensor &input)
 
 Tensor Dense::backward_pass(const Tensor &input, const Tensor &output_derivatives)
 {
-    std::cout << "dense backprop" << std::endl;
-
     const int units = weights.size();
     const int input_size = input[0][0].size();
     const int output_size = output_derivatives[0][0].size();
-
-    std::cout << output_derivatives[0][0].size() << std::endl;
 
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
@@ -94,12 +90,14 @@ void Dense::apply_gradients(double learn_rate)
         for (int j = 0; j < weights[i].size(); ++j)
         {
             weights[i][j] -= deriv_weights[i][j] * learn_rate;
+            deriv_weights[i][i] = 0;
         }
     }
 
     for (int i = 0; i < biases.size(); ++i)
     {
         biases[i] -= deriv_biases[i] * learn_rate;
+        deriv_biases[i] = 0;
     }
 }
 

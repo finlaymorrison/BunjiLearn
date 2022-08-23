@@ -28,9 +28,7 @@ Tensor Flatten::forward_pass(const Tensor &input)
 
 Tensor Flatten::backward_pass(const Tensor &input, const Tensor &output_derivatives)
 {
-    std::cout << "flatten backprop" << std::endl;
     Tensor input_derivatives({});
-    std::cout << output_derivatives[0][0].size() << std::endl;
 
     int index = 0;
     for (int i = 0; i < d; ++i)

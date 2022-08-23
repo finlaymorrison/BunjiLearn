@@ -27,7 +27,6 @@ Tensor Network::backward_pass(const Tensor &input, const Tensor &output_derivati
             layer_input = input;
         }
         input_derivatives = layers[i]->backward_pass(layer_input, input_derivatives);
-        std::cout << "\t" << input_derivatives[0][0].size() << std::endl;
     }
     return input_derivatives;
 }
