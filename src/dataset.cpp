@@ -46,7 +46,7 @@ Dataset::Dataset(const std::string &filepath)
         std::cerr << "Dataset length mismatch" << std::endl;
     }
 
-    std::cout << "Cleanup dataset loading" << std::endl;
+    std::cout << "Cleanup dataset loading" << std::endl << std::endl;
 }
 
 int Dataset::train_len()

@@ -8,8 +8,9 @@ private:
 public:
     Activation() = default;
 
-    /* Activation layers have no gradients to apply */
-    void apply_gradients(double learn_rate) override {};
+    /* Activation layesr have no parameters */
+    void apply_gradients(double learn_rate) override {}
+    void dump_data() override {}
 };
 
 class ReLU : public Activation
@@ -20,7 +21,6 @@ public:
     ReLU() = default;
     Tensor forward_pass(const Tensor &input) override;
     Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
-    void dump_data() override;
 };
 
 class Sigmoid : public Activation
@@ -31,7 +31,6 @@ public:
     Sigmoid() = default;
     Tensor forward_pass(const Tensor &input) override;
     Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
-    void dump_data() override;
 };
 
 class Softmax : public Activation
@@ -42,7 +41,6 @@ public:
     Softmax() = default;
     Tensor forward_pass(const Tensor &input) override;
     Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
-    void dump_data() override;
 };
 
 class Tanh : public Activation
@@ -53,5 +51,4 @@ public:
     Tanh() = default;
     Tensor forward_pass(const Tensor &input) override;
     Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
-    void dump_data() override;
 };

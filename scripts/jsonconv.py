@@ -26,14 +26,16 @@ def read_idx(path):
         bytes = f.read(functools.reduce(operator.mul, dims, 1))
         return arrayify(bytes, dims)
 
+MAX_IMAGES = 1000
+
 def main():
     images = read_idx("train-images.idx3-ubyte")
     with open('images.json', 'w') as f:
-        json.dump(images, f)
+        json.dump(images[:MAX_IMAGES], f)
     
     labels = read_idx("train-labels.idx1-ubyte")
     with open('labels.json', 'w') as f:
-        json.dump(labels, f)
+        json.dump(labels[:MAX_IMAGES], f)
 
 if __name__ == "__main__":
     main()

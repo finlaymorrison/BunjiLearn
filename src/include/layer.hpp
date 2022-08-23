@@ -17,7 +17,7 @@ public:
     virtual Tensor forward_pass(const Tensor &input) = 0;
     virtual Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) = 0;
 
-    virtual void apply_gradients(double learn_rate);
+    virtual void apply_gradients(double learn_rate) = 0;
 
     virtual void dump_data() = 0;
 };

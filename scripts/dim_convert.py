@@ -26,7 +26,7 @@ def read_3d_arr(filepath, norm, logits):
     if logits:
         arr = logit_convert(arr, 10)
     while(len(arr.shape) < 4):
-        arr = np.expand_dims(arr, axis=len(arr.shape))
+        arr = np.expand_dims(arr, axis=1)
     return arr
     
 def convert_json(src, dest, norm=1, logits=False):

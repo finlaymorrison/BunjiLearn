@@ -29,7 +29,7 @@ def write_db(dataset, filepath):
         json.dump(dataset, f)
 
 def main():
-    dataset = assemble_db("images3d.json", "labels3d.json", train_len=40000, val_len=10000, test_len=10000)
+    dataset = assemble_db("images3d.json", "labels3d.json", train_len=800, val_len=100, test_len=100)
     write_db(dataset, "dataset.json")
 
 if __name__ == "__main__":

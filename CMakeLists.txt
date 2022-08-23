@@ -16,6 +16,7 @@ add_library(ml_library_src
     ${PROJECT_SOURCE_DIR}/src/trainer.cpp
     ${PROJECT_SOURCE_DIR}/src/network.cpp
     ${PROJECT_SOURCE_DIR}/src/loss.cpp
+    ${PROJECT_SOURCE_DIR}/src/flatten.cpp
     )
 
 target_include_directories(ml_library PUBLIC ${PROJECT_BINARY_DIR})
