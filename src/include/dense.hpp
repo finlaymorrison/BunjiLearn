@@ -9,7 +9,6 @@ private:
     std::vector<std::vector<double>> deriv_weights;
     std::vector<double> biases;
     std::vector<double> deriv_biases;
-    std::vector<double> activations;
 public:
     Dense(int inputs, int units);
     Tensor forward_pass(const Tensor &input) override;

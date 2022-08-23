@@ -11,11 +11,15 @@
 class Layer
 {
 private:
+protected:
+    Tensor activations;
 public:
-    Layer() = default;
+    Layer();
 
     virtual Tensor forward_pass(const Tensor &input) = 0;
     virtual Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) = 0;
+
+    Tensor get_activations() const;
 
     virtual void apply_gradients(double learn_rate) = 0;
 

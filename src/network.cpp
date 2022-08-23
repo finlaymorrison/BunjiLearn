@@ -17,10 +17,18 @@ Tensor Network::backward_pass(const Tensor &input, const Tensor &output_derivati
     Tensor input_derivatives = output_derivatives;
     for (int i = layers.size() - 1; i >= 0; i--)
     {
-        std::cout << input_derivatives[0][0].size() << std::endl;
-        input_derivatives = layers[i]->backward_pass(input, input_derivatives);
+        Tensor layer_input;
+        if (i > 0)
+        {
+            layer_input = layers[i-1]->get_activations();
+        }
+        else
+        {
+            layer_input = input;
+        }
+        input_derivatives = layers[i]->backward_pass(layer_input, input_derivatives);
+        std::cout << "\t" << input_derivatives[0][0].size() << std::endl;
     }
-    std::cout << input_derivatives[0][0].size() << std::endl;
     return input_derivatives;
 }
 

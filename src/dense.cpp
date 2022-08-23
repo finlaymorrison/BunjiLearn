@@ -7,8 +7,7 @@ Dense::Dense(int input, int units) :
     weights(units, std::vector<double>(input,0.0)),
     deriv_weights(units, std::vector<double>(input,0.0)),
     biases(units, 0.0),
-    deriv_biases(units, 0.0),
-    activations(units, 0.0)
+    deriv_biases(units, 0.0)
 {
     std::default_random_engine gen;
     std::uniform_real_distribution<double> dist(-1.0, 1.0);
@@ -41,21 +40,23 @@ Tensor Dense::forward_pass(const Tensor &input)
         }
         sum += biases[i];
 
-        /* store the activation for use in backpropogation */
-        activations[i] = sum;
-
         /* add to the output vector */
         output[0][0][i] = sum;
     }
 
+    activations = output;
     return output;
 }
 
 Tensor Dense::backward_pass(const Tensor &input, const Tensor &output_derivatives)
 {
+    std::cout << "dense backprop" << std::endl;
+
     const int units = weights.size();
     const int input_size = input[0][0].size();
     const int output_size = output_derivatives[0][0].size();
+
+    std::cout << output_derivatives[0][0].size() << std::endl;
 
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
