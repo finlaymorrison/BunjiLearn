@@ -19,3 +19,12 @@ public:
     Tensor derivative(const Tensor &output, const Tensor &expected_output) override;
     double get_loss(const Tensor &output, const Tensor &expected_output) override;
 };
+
+class Crossentropy : public Loss
+{
+private:
+public:
+    Crossentropy() = default;
+    Tensor derivative(const Tensor &output, const Tensor &expected_output) override;
+    double get_loss(const Tensor &output, const Tensor &expected_output) override;
+};
