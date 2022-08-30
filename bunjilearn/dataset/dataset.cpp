@@ -7,6 +7,40 @@ using json = nlohmann::json;
 #include <array>
 #include <iostream>
 
+Tensor<double, 3> vec_conv(const std::vector<std::vector<std::vector<double>>> &vec)
+{
+    std::size_t d0 = vec.size();
+    std::size_t d1 = vec[0].size();
+    std::size_t d2 = vec[0][0].size();
+
+    Tensor<double, 3> output({d0, d1, d2});
+
+    for (int i = 0; i < d0; ++i)
+    {
+        for (int j = 0; j < d1; ++j)
+        {
+            for (int k = 0; k < d2; ++k)
+            {
+                output[i][j][k] = vec[i][j][k];
+            }
+        }
+    }
+
+    return output;
+}
+
+std::vector<Tensor<double, 3>> vecs_conv(const std::vector<std::vector<std::vector<std::vector<double>>>> &vecs)
+{
+    std::vector<Tensor<double, 3>> tensors;
+
+    for (int i = 0; i < vecs.size(); ++i)
+    {
+        tensors.push_back(vec_conv(vecs[i]));
+    }
+
+    return tensors;
+}
+
 /*
  * Loads in a JSON dataset at the filepath specified with
  * following format.
@@ -28,8 +62,12 @@ Dataset::Dataset(const std::string &filepath)
 
     std::cout << "Parsing dataset" << std::endl;
 
-    inputs = js["inputs"];
-    outputs = js["outputs"];
+    std::vector<std::vector<std::vector<std::vector<double>>>> inputs_vec = js["inputs"];
+    std::vector<std::vector<std::vector<std::vector<double>>>> outputs_vec = js["outputs"];
+
+    inputs = vecs_conv(inputs_vec);
+    outputs = vecs_conv(outputs_vec);
+
     int train_len = js["train_len"];
     int val_len = js["val_len"];
     int test_len = js["test_len"];
@@ -64,7 +102,7 @@ int Dataset::test_len()
     return inputs.size() - splits.second;
 }
 
-std::pair<Tensor, Tensor> Dataset::train(int index)
+std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::train(int index)
 {
     if (index >= splits.first)
     {
@@ -73,7 +111,7 @@ std::pair<Tensor, Tensor> Dataset::train(int index)
     return std::make_pair(inputs[index],outputs[index]);
 }
 
-std::pair<Tensor, Tensor> Dataset::val(int index)
+std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::val(int index)
 {
     if (index >= splits.second - splits.first)
     {
@@ -82,7 +120,7 @@ std::pair<Tensor, Tensor> Dataset::val(int index)
     return std::make_pair(inputs[index + splits.first], outputs[index + splits.first]);
 }
 
-std::pair<Tensor, Tensor> Dataset::test(int index)
+std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::test(int index)
 {
     if (index >= inputs.size() - splits.second)
     {

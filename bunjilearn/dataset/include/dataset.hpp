@@ -9,8 +9,8 @@
 class Dataset
 {
 private:
-    std::vector<Tensor> inputs;
-    std::vector<Tensor> outputs;
+    std::vector<Tensor<double, 3>> inputs;
+    std::vector<Tensor<double, 3>> outputs;
     std::pair<int, int> splits;
 
     void parse_data(const std::string &data);
@@ -19,7 +19,7 @@ public:
     int train_len();
     int val_len();
     int test_len();
-    std::pair<Tensor, Tensor> train(int index);
-    std::pair<Tensor, Tensor> val(int index);
-    std::pair<Tensor, Tensor> test(int index);
+    std::pair<Tensor<double, 3>, Tensor<double, 3>> train(int index);
+    std::pair<Tensor<double, 3>, Tensor<double, 3>> val(int index);
+    std::pair<Tensor<double, 3>, Tensor<double, 3>> test(int index);
 };

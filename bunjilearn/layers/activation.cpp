@@ -3,11 +3,10 @@
 #include <cmath>
 #include <iostream>
 
-Tensor ReLU::forward_pass(const Tensor &input)
+Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input)
 {
-    int inputs = input[0][0].size();
-    Tensor output({{{}}});
-    output[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> output({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {
@@ -18,11 +17,10 @@ Tensor ReLU::forward_pass(const Tensor &input)
     return output;
 }
 
-Tensor ReLU::backward_pass(const Tensor &input, const Tensor &output_derivatives)
+Tensor<double, 3> ReLU::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    int inputs = input[0][0].size();
-    Tensor input_derivatives({{{}}});
-    input_derivatives[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> input_derivatives({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {
@@ -34,11 +32,10 @@ Tensor ReLU::backward_pass(const Tensor &input, const Tensor &output_derivatives
 
 
 
-Tensor Sigmoid::forward_pass(const Tensor &input)
+Tensor<double, 3> Sigmoid::forward_pass(const Tensor<double, 3> &input)
 {
-    int inputs = input[0][0].size();
-    Tensor output({{{}}});
-    output[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> output({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {
@@ -49,11 +46,10 @@ Tensor Sigmoid::forward_pass(const Tensor &input)
     return output;
 }
 
-Tensor Sigmoid::backward_pass(const Tensor &input, const Tensor &output_derivatives)
+Tensor<double, 3> Sigmoid::backward_pass(const Tensor<double, 3> &input, const Tensor <double, 3>&output_derivatives)
 {
-    int inputs = input[0][0].size();
-    Tensor input_derivatives({{{}}});
-    input_derivatives[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> input_derivatives({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {
@@ -65,11 +61,10 @@ Tensor Sigmoid::backward_pass(const Tensor &input, const Tensor &output_derivati
 
 
 
-Tensor Tanh::forward_pass(const Tensor &input)
+Tensor<double, 3> Tanh::forward_pass(const Tensor<double, 3> &input)
 {
-    int inputs = input[0][0].size();
-    Tensor output({{{}}});
-    output[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> output({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {
@@ -80,11 +75,10 @@ Tensor Tanh::forward_pass(const Tensor &input)
     return output;
 }
 
-Tensor Tanh::backward_pass(const Tensor &input, const Tensor &output_derivatives)
+Tensor<double, 3> Tanh::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    int inputs = input[0][0].size();
-    Tensor input_derivatives({{{}}});
-    input_derivatives[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> input_derivatives({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {
@@ -96,11 +90,10 @@ Tensor Tanh::backward_pass(const Tensor &input, const Tensor &output_derivatives
 
 
 
-Tensor Softmax::forward_pass(const Tensor &input)
+Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input)
 {
-    int inputs = input[0][0].size();
-    Tensor output({{{}}});
-    output[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> output({1, 1, inputs});
 
     double sum = 0.0;
     for (int i = 0; i < inputs; i++)
@@ -116,11 +109,10 @@ Tensor Softmax::forward_pass(const Tensor &input)
     return output;
 }
 
-Tensor Softmax::backward_pass(const Tensor &input, const Tensor &output_derivatives)
+Tensor<double, 3> Softmax::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    int inputs = input[0][0].size();
-    Tensor input_derivatives({{{}}});
-    input_derivatives[0][0].resize(inputs);
+    std::size_t inputs = input[0][0].size();
+    Tensor<double, 3> input_derivatives({1, 1, inputs});
 
     for (int i = 0; i < inputs; i++)
     {

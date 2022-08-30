@@ -18,8 +18,8 @@ class ReLU : public Activation
 private:
 public:
     ReLU() = default;
-    Tensor forward_pass(const Tensor &input) override;
-    Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
+    Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
+    Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 };
 
 class Sigmoid : public Activation
@@ -27,8 +27,8 @@ class Sigmoid : public Activation
 private:
 public:
     Sigmoid() = default;
-    Tensor forward_pass(const Tensor &input) override;
-    Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
+    Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
+    Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 };
 
 class Softmax : public Activation
@@ -36,8 +36,8 @@ class Softmax : public Activation
 private:
 public:
     Softmax() = default;
-    Tensor forward_pass(const Tensor &input) override;
-    Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
+    Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
+    Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 };
 
 class Tanh : public Activation
@@ -45,6 +45,6 @@ class Tanh : public Activation
 private:
 public:
     Tanh() = default;
-    Tensor forward_pass(const Tensor &input) override;
-    Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
+    Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
+    Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 };

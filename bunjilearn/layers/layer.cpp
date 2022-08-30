@@ -4,7 +4,7 @@ Layer::Layer() :
     activations()
 {}
 
-Tensor Layer::get_activations() const
+Tensor<double, 3> Layer::get_activations() const
 {
     return activations;
 }

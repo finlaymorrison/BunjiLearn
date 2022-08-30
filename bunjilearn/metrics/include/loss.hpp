@@ -7,8 +7,8 @@ class Loss
 private:
 public:
     Loss() = default;
-    virtual Tensor derivative(const Tensor &output, const Tensor &expected_output) = 0;
-    virtual double get_loss(const Tensor &output, const Tensor &expected_output) = 0;
+    virtual Tensor<double, 3> derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) = 0;
+    virtual double get_loss(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) = 0;
 };
 
 class SquaredError : public Loss
@@ -16,8 +16,8 @@ class SquaredError : public Loss
 private:
 public:
     SquaredError() = default;
-    Tensor derivative(const Tensor &output, const Tensor &expected_output) override;
-    double get_loss(const Tensor &output, const Tensor &expected_output) override;
+    Tensor<double, 3> derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
+    double get_loss(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
 };
 
 class Crossentropy : public Loss
@@ -25,6 +25,6 @@ class Crossentropy : public Loss
 private:
 public:
     Crossentropy() = default;
-    Tensor derivative(const Tensor &output, const Tensor &expected_output) override;
-    double get_loss(const Tensor &output, const Tensor &expected_output) override;
+    Tensor<double, 3> derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
+    double get_loss(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
 };
