@@ -11,8 +11,8 @@ private:
     std::vector<double> deriv_biases;
 public:
     Dense(int inputs, int units);
-    Tensor forward_pass(const Tensor &input) override;
-    Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) override;
+    Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
+    Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 
     void apply_gradients(double learn_rate) override;
 

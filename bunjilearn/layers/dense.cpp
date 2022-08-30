@@ -21,14 +21,13 @@ Dense::Dense(int input, int units) :
     }
 }
 
-Tensor Dense::forward_pass(const Tensor &input)
+Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)
 {
-    const int units = weights.size();
-    const int input_size = input[0][0].size();
+    const std::size_t units = weights.size();
+    const std::size_t input_size = input[0][0].size();
 
     /* initialize a tensor for the output */
-    Tensor output({{{}}});
-    output[0][0].resize(units);
+    Tensor<double, 3> output({1, 1, units});
 
     for (int i = 0; i < units; ++i)
     {
@@ -48,22 +47,21 @@ Tensor Dense::forward_pass(const Tensor &input)
     return output;
 }
 
-Tensor Dense::backward_pass(const Tensor &input, const Tensor &output_derivatives)
+Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    const int units = weights.size();
-    const int input_size = input[0][0].size();
-    const int output_size = output_derivatives[0][0].size();
+    const std::size_t units = weights.size();
+    const std::size_t input_size = input[0][0].size();
+    const std::size_t output_size = output_derivatives[0][0].size();
 
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
     {
         std::cerr << "output size does not match units" << std::endl;
-        return Tensor({{{}}});
+        return Tensor<double, 3>({1, 1, 1});
     }
     
     /* initialize a tensor for the output */
-    Tensor deriv_input({{{}}});
-    deriv_input[0][0].resize(input_size);
+    Tensor<double, 3> deriv_input({1, 1, input_size});
     
     for (int i = 0; i < units; ++i)
     {

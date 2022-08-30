@@ -6,7 +6,7 @@ Trainer::Trainer(Network *network, Dataset *dataset, Loss *loss, double learn_ra
     network(network), dataset(dataset), loss(loss), learn_rate(learn_rate)
 {}
 
-double Trainer::train_example(const Tensor &input, const Tensor &expected_output)
+double Trainer::train_example(const Tensor<double, 3> &input, const Tensor<double, 3> &expected_output)
 {
     Tensor output = network->forward_pass(input);
     double network_loss = loss->get_loss(output, expected_output);
@@ -21,7 +21,7 @@ double Trainer::train_pass()
     double total_loss = 0.0;
     for (int i = 0; i < dataset->train_len(); ++i)
     {
-        std::pair<Tensor, Tensor> example = dataset->train(i);
+        std::pair<Tensor<double, 3>, Tensor<double, 3>> example = dataset->train(i);
         total_loss += train_example(example.first, example.second);
     }
     network->apply_gradients(learn_rate / dataset->train_len());

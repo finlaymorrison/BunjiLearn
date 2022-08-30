@@ -12,14 +12,14 @@ class Layer
 {
 private:
 protected:
-    Tensor activations;
+    Tensor<double, 3> activations;
 public:
     Layer();
 
-    virtual Tensor forward_pass(const Tensor &input) = 0;
-    virtual Tensor backward_pass(const Tensor &input, const Tensor &output_derivatives) = 0;
+    virtual Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) = 0;
+    virtual Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) = 0;
 
-    Tensor get_activations() const;
+    Tensor<double, 3> get_activations() const;
 
     virtual void apply_gradients(double learn_rate) = 0;
 

@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-Tensor Network::forward_pass(const Tensor &input)
+Tensor<double, 3> Network::forward_pass(const Tensor<double, 3> &input)
 {
-    Tensor output = input;
+    Tensor<double, 3> output = input;
     for (Layer *layer : layers)
     {
         output = layer->forward_pass(output);
@@ -12,12 +12,12 @@ Tensor Network::forward_pass(const Tensor &input)
     return output;
 }
 
-Tensor Network::backward_pass(const Tensor &input, const Tensor &output_derivatives)
+Tensor<double, 3> Network::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
     Tensor input_derivatives = output_derivatives;
     for (int i = layers.size() - 1; i >= 0; i--)
     {
-        Tensor layer_input;
+        Tensor<double, 3> layer_input;
         if (i > 0)
         {
             layer_input = layers[i-1]->get_activations();
