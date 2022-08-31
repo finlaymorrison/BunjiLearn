@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <iostream>
 
+namespace bunji
+{
+    
 Accuracy::Accuracy() :
     correct(0)
 {}
@@ -44,3 +47,5 @@ std::string Accuracy::get_name()
 {
     return std::string("accuracy");
 }
+
+} // namespace bunji

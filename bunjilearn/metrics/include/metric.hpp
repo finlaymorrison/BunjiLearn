@@ -4,6 +4,9 @@
 
 #include <string>
 
+namespace bunji
+{
+
 class Metric
 {
 private:
@@ -18,10 +21,11 @@ class Accuracy : public Metric
 {
 private:
     int correct;
-    int total;
 public:
     Accuracy();
     void update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
     double evaluate(int example_count) override;
     std::string get_name() override;
 };
+
+} // namespace bunji

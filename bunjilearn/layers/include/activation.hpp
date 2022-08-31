@@ -2,6 +2,9 @@
 
 #include "layer.hpp"
 
+namespace bunji
+{
+
 class Activation : public Layer
 {
 private:
@@ -48,3 +51,5 @@ public:
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
     Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 };
+
+} // namespace bunji

@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+namespace bunji
+{
+
 Trainer::Trainer(Network *network, Dataset *dataset, Loss *loss, const std::vector<Metric*> &metrics, double learn_rate) :
     network(network), dataset(dataset), loss(loss), metrics(metrics), learn_rate(learn_rate)
 {}
@@ -50,3 +53,5 @@ void Trainer::fit(int epochs)
         std::cout << std::endl;
     }
 }
+
+} // namespace bunji

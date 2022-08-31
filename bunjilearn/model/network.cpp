@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+namespace bunji
+{
+
 Tensor<double, 3> Network::forward_pass(const Tensor<double, 3> &input)
 {
     Tensor<double, 3> output = input;
@@ -43,3 +46,5 @@ void Network::add_layer(Layer *layer)
 {
     layers.push_back(layer);
 }
+
+} // namespace bunji

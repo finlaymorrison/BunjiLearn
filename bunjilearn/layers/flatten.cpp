@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+namespace bunji
+{
+
 Flatten::Flatten(int d, int h, int w) :
     d(d), h(h), w(w)
 {}
@@ -45,3 +48,5 @@ Tensor<double, 3> Flatten::backward_pass(const Tensor<double, 3> &input, const T
 
     return input_derivatives;
 }
+
+} // namespace bunji
