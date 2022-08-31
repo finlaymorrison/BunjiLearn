@@ -6,7 +6,7 @@
 #include "loss.hpp"
 #include "metric.hpp"
 #include "flatten.hpp"
-
+#include "log.hpp"
 #include "config.h"
 
 #include <iostream>
@@ -14,6 +14,8 @@
 int main(int argc, char **argv)
 {
     std::cout << "ml_library version " << ml_library_VERSION_MAJOR << "." << ml_library_VERSION_MINOR << '\n' << std::endl;
+
+    BUNJI_DBG("Hello, %d", 42);
 
     bunji::Dataset dataset("../scripts/dataset.json");
 
