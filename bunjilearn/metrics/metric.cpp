@@ -1,0 +1,41 @@
+#include "metric.hpp"
+
+#include <algorithm>
+
+Accuracy::Accuracy() :
+    correct(0), total(0)
+{}
+
+void Accuracy::update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
+{
+    int max_pred_index = -1;
+    int max_pred_val = -1.0;
+    int max_expt_index = -1;
+    int max_expt_val = -1.0;
+    for (std::size_t i = 0; i < output[0][0].size(); ++i)
+    {
+        if (output[0][0][i] > max_pred_val)
+        {
+            max_pred_val = output[0][0][i];
+            max_pred_index = i;
+        }
+        if (expected_output[0][0][i] > max_expt_val)
+        {
+            max_expt_val = output[0][0][i];
+            max_expt_index = i;
+        }
+    }
+    
+    if (max_pred_index == max_expt_index)
+    {
+        ++correct;
+    }
+    ++total;
+}
+
+double Accuracy::evaluate()
+{
+    double accuracy = static_cast<double>(correct) / total;
+    correct = 0;
+    total = 0;
+}
