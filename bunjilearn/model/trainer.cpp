@@ -2,37 +2,51 @@
 
 #include <iostream>
 
-Trainer::Trainer(Network *network, Dataset *dataset, Loss *loss, double learn_rate) :
-    network(network), dataset(dataset), loss(loss), learn_rate(learn_rate)
+Trainer::Trainer(Network *network, Dataset *dataset, Loss *loss, const std::vector<Metric*> &metrics, double learn_rate) :
+    network(network), dataset(dataset), loss(loss), metrics(metrics), learn_rate(learn_rate)
 {}
 
-double Trainer::train_example(const Tensor<double, 3> &input, const Tensor<double, 3> &expected_output)
+void Trainer::train_example(const Tensor<double, 3> &input, const Tensor<double, 3> &expected_output)
 {
     Tensor output = network->forward_pass(input);
-    double network_loss = loss->get_loss(output, expected_output);
+    loss->update(output, expected_output);
+    for (Metric *metric : metrics)
+    {
+        metric->update(output, expected_output);
+    }
     Tensor output_derivatives = loss->derivative(output, expected_output);
     Tensor input_derivatives = network->backward_pass(input, output_derivatives);
-
-    return network_loss;
 }
 
-double Trainer::train_pass()
+std::vector<double> Trainer::train_pass()
 {
-    double total_loss = 0.0;
     for (int i = 0; i < dataset->train_len(); ++i)
     {
         std::pair<Tensor<double, 3>, Tensor<double, 3>> example = dataset->train(i);
-        total_loss += train_example(example.first, example.second);
+        train_example(example.first, example.second);
     }
     network->apply_gradients(learn_rate / dataset->train_len());
-    return total_loss / dataset->train_len();
+
+    std::vector<double> metric_vals(metrics.size());
+
+    for (int i = 0; i < metrics.size(); ++i)
+    {
+        metric_vals[i] = metrics[i]->evaluate(dataset->train_len());
+    }
+
+    return metric_vals;
 }
 
 void Trainer::fit(int epochs)
 {
     for (int i = 0; i < epochs; ++i)
     {
-        double network_loss = train_pass();
-        std::cout << "Epoch: " << i << " Loss: " << network_loss << std::endl;
+        std::vector<double> metric_vals = train_pass();
+        std::cout << "Epoch: " << i;
+        for (int i = 0; i < metrics.size(); ++i)
+        {
+            std::cout << '\t' << metrics[i]->get_name() << ':' << metric_vals[i];
+        }
+        std::cout << std::endl;
     }
 }

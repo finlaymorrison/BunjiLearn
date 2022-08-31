@@ -4,6 +4,7 @@
 #include "network.hpp"
 #include "trainer.hpp"
 #include "loss.hpp"
+#include "metric.hpp"
 #include "flatten.hpp"
 
 #include "config.h"
@@ -32,7 +33,12 @@ int main(int argc, char **argv)
 
     Crossentropy loss;
 
-    Trainer network_trainer(&network, &dataset, &loss, 5);
+    Crossentropy loss_metric;
+    Accuracy acc_metric;
+    
+    std::vector<Metric*> metrics = {&loss_metric, &acc_metric};
+
+    Trainer network_trainer(&network, &dataset, &loss, metrics, 5);
 
     network_trainer.fit(1000000);
     

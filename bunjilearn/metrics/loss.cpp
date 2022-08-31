@@ -3,6 +3,22 @@
 #include <iostream>
 #include <cmath>
 
+Loss::Loss() :
+    loss(0.0)
+{}
+
+double Loss::evaluate(int example_count)
+{
+    double result = loss / example_count;
+    loss = 0.0;
+    return result;
+}
+
+std::string Loss::get_name()
+{
+    return std::string("loss");
+}
+
 Tensor<double, 3> SquaredError::derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
     Tensor<double, 3> derivative({1, 1, output[0][0].size()});
@@ -15,16 +31,12 @@ Tensor<double, 3> SquaredError::derivative(const Tensor<double, 3> &output, cons
     return derivative;
 }
 
-double SquaredError::get_loss(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
+void SquaredError::update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    double loss = 0.0;
-
     for (int i = 0; i < output[0][0].size(); ++i)
     {
         loss += 0.5 * (output[0][0][i] - expected_output[0][0][i]) * (output[0][0][i] - expected_output[0][0][i]);
     }
-
-    return loss;
 }
 
 Tensor<double, 3> Crossentropy::derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
@@ -39,14 +51,10 @@ Tensor<double, 3> Crossentropy::derivative(const Tensor<double, 3> &output, cons
     return derivative;
 }
 
-double Crossentropy::get_loss(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
+void Crossentropy::update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    double loss = 0.0;
-
     for (int i = 0; i < output[0][0].size(); ++i)
     {
         loss -= expected_output[0][0][i] * std::log2(output[0][0][i]);
     }
-
-    return loss;
 }

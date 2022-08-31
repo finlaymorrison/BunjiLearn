@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_library(metrics
     ${PROJECT_SOURCE_DIR}/loss.cpp
+    ${PROJECT_SOURCE_DIR}/metric.cpp
     )
 
 target_include_directories(metrics PUBLIC ${PROJECT_SOURCE_DIR}/include)
