@@ -7,11 +7,16 @@ Loss::Loss() :
     loss(0.0)
 {}
 
-double Loss::evaluate()
+double Loss::evaluate(int example_count)
 {
-    double result = loss;
+    double result = loss / example_count;
     loss = 0.0;
     return result;
+}
+
+std::string Loss::get_name()
+{
+    return std::string("loss");
 }
 
 Tensor<double, 3> SquaredError::derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)

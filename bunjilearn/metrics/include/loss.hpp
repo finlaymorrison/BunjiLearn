@@ -12,7 +12,8 @@ public:
     
     virtual Tensor<double, 3> derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) = 0;
 
-    double evaluate() override;
+    double evaluate(int example_count) override;
+    std::string get_name() override;
 };
 
 class SquaredError : public Loss
