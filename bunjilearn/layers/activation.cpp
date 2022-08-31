@@ -3,6 +3,9 @@
 #include <cmath>
 #include <iostream>
 
+namespace bunji
+{
+
 Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input)
 {
     std::size_t inputs = input[0][0].size();
@@ -125,3 +128,5 @@ Tensor<double, 3> Softmax::backward_pass(const Tensor<double, 3> &input, const T
 
     return input_derivatives;
 }
+
+} // namespace bunji

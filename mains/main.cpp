@@ -15,15 +15,15 @@ int main(int argc, char **argv)
 {
     std::cout << "ml_library version " << ml_library_VERSION_MAJOR << "." << ml_library_VERSION_MINOR << '\n' << std::endl;
 
-    Dataset dataset("../scripts/dataset.json");
+    bunji::Dataset dataset("../scripts/dataset.json");
 
-    Network network;
+    bunji::Network network;
 
-    Flatten f0(1, 28, 28);
-    Dense d0(784, 256);
-    Sigmoid a0;
-    Dense d1(256, 10);
-    Softmax a1;
+    bunji::Flatten f0(1, 28, 28);
+    bunji::Dense d0(784, 256);
+    bunji::Sigmoid a0;
+    bunji::Dense d1(256, 10);
+    bunji::Softmax a1;
 
     network.add_layer(&f0);
     network.add_layer(&d0);
@@ -31,14 +31,14 @@ int main(int argc, char **argv)
     network.add_layer(&d1);
     network.add_layer(&a1);
 
-    Crossentropy loss;
+    bunji::Crossentropy loss;
 
-    Crossentropy loss_metric;
-    Accuracy acc_metric;
+    bunji::Crossentropy loss_metric;
+    bunji::Accuracy acc_metric;
     
-    std::vector<Metric*> metrics = {&loss_metric, &acc_metric};
+    std::vector<bunji::Metric*> metrics = {&loss_metric, &acc_metric};
 
-    Trainer network_trainer(&network, &dataset, &loss, metrics, 5);
+    bunji::Trainer network_trainer(&network, &dataset, &loss, metrics, 5);
 
     network_trainer.fit(1000000);
     

@@ -2,6 +2,9 @@
 
 #include "tensor.hpp"
 
+namespace bunji
+{
+
 /* 
  * general class for a layer in a neural network. The forward and backward
  * functions must be overidden in a child class to implement the
@@ -25,3 +28,5 @@ public:
 
     virtual void dump_data() = 0;
 };
+
+} // namespace bunji

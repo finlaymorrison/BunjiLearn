@@ -5,6 +5,9 @@
 #include "loss.hpp"
 #include "metric.hpp"
 
+namespace bunji
+{
+
 class Trainer
 {
 private:
@@ -19,3 +22,5 @@ public:
     std::vector<double> train_pass();
     void fit(int epochs);
 };
+
+} // namespace bunji

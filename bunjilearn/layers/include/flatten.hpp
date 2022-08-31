@@ -2,6 +2,9 @@
 
 #include "layer.hpp"
 
+namespace bunji
+{
+
 class Flatten : public Layer
 {
 private:
@@ -15,3 +18,5 @@ public:
     void apply_gradients(double learn_rate) override {}
     void dump_data() override {}
 };
+
+} // namespace bunji

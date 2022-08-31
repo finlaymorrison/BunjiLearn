@@ -7,6 +7,9 @@ using json = nlohmann::json;
 #include <array>
 #include <iostream>
 
+namespace bunji
+{
+
 Tensor<double, 3> vec_conv(const std::vector<std::vector<std::vector<double>>> &vec)
 {
     std::size_t d0 = vec.size();
@@ -128,3 +131,5 @@ std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::test(int index)
     }
     return std::make_pair(inputs[index + splits.second], outputs[index + splits.second]);
 }
+
+} // namespace bunji

@@ -4,6 +4,9 @@
 
 #include <vector>
 
+namespace bunji
+{
+
 class Network
 {
 private:
@@ -17,3 +20,5 @@ public:
 
     void add_layer(Layer *layer);
 };
+
+} // namespace bunji

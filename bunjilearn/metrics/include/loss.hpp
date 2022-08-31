@@ -3,6 +3,9 @@
 #include "tensor.hpp"
 #include "metric.hpp"
 
+namespace bunji
+{
+
 class Loss : public Metric
 {
 protected:
@@ -33,3 +36,5 @@ public:
     Tensor<double, 3> derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
     void update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output) override;
 };
+
+} // namespace bunji

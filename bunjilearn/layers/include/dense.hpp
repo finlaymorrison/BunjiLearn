@@ -2,6 +2,9 @@
 
 #include "layer.hpp"
 
+namespace bunji
+{
+
 class Dense : public Layer
 {
 private:
@@ -18,3 +21,5 @@ public:
 
     void dump_data() override;
 };
+
+} // namespace bunji

@@ -3,6 +3,9 @@
 #include <random>
 #include <iostream>
 
+namespace bunji
+{
+
 Dense::Dense(int input, int units) :
     weights(units, std::vector<double>(input,0.0)),
     deriv_weights(units, std::vector<double>(input,0.0)),
@@ -112,3 +115,5 @@ void Dense::dump_data()
     }
     std::cout << std::endl;
 }
+
+} // namespace bunji

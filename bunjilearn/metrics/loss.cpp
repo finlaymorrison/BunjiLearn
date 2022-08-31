@@ -3,6 +3,9 @@
 #include <iostream>
 #include <cmath>
 
+namespace bunji
+{
+
 Loss::Loss() :
     loss(0.0)
 {}
@@ -58,3 +61,5 @@ void Crossentropy::update(const Tensor<double, 3> &output, const Tensor<double, 
         loss -= expected_output[0][0][i] * std::log2(output[0][0][i]);
     }
 }
+
+} // namespace bunji

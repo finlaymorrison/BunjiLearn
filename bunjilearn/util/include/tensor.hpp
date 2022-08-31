@@ -3,6 +3,9 @@
 #include <vector>
 #include <cstddef>
 
+namespace bunji
+{
+
 template<typename Ty, int DIM>
 class Tensor
 {
@@ -127,3 +130,5 @@ public:
         }
     };
 };
+
+} // namespace bunji
