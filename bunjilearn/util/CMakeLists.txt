@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_library(util
-    ${PROJECT_SOURCE_DIR}/empty.cpp
+    ${PROJECT_SOURCE_DIR}/progress_bar.cpp
     )
 
 target_include_directories(util PUBLIC ${PROJECT_SOURCE_DIR}/include)
