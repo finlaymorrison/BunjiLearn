@@ -1,4 +1,5 @@
 #include "dataset.hpp"
+#include "log.hpp"
 
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
@@ -58,12 +59,13 @@ std::vector<Tensor<double, 3>> vecs_conv(const std::vector<std::vector<std::vect
  */
 Dataset::Dataset(const std::string &filepath)
 {
-    std::cout << "Loading dataset from " << filepath << std::endl;
+    BUNJI_DBG("loading dataset from {}", filepath);
+    
     std::ifstream infile(filepath);
     json js;
     infile >> js;
 
-    std::cout << "Parsing dataset" << std::endl;
+    BUNJI_DBG("parsing dataset");
 
     std::vector<std::vector<std::vector<std::vector<double>>>> inputs_vec = js["inputs"];
     std::vector<std::vector<std::vector<std::vector<double>>>> outputs_vec = js["outputs"];
@@ -76,18 +78,18 @@ Dataset::Dataset(const std::string &filepath)
     int test_len = js["test_len"];
     splits = std::make_pair(train_len, train_len + val_len);
 
-    std::cout << "Verifying dataset" << std::endl;
+    BUNJI_DBG("verifying dataset");
 
     if (inputs.size() != outputs.size())
     {
-        std::cerr << "Inputs and outputs are not the same size" << std::endl;
+        BUNJI_WRN("inputs and outputs are not the same size");
     }
     if (train_len + val_len + test_len != inputs.size())
     {
-        std::cerr << "Dataset length mismatch" << std::endl;
+        BUNJI_WRN("incorrect amount of data for all dataset partitions");
     }
 
-    std::cout << "Cleanup dataset loading" << std::endl << std::endl;
+    BUNJI_DBG("cleanup dataset loading");
 }
 
 int Dataset::train_len()

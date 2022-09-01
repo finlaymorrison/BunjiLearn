@@ -12,6 +12,7 @@ add_executable(ml_library ${PROJECT_SOURCE_DIR}/mains/main.cpp)
 
 add_subdirectory(bunjilearn)
 add_subdirectory(third_party/json)
+add_subdirectory(third_party/fmt)
 
 target_link_libraries(ml_library layers model dataset metrics)
 
