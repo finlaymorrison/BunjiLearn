@@ -9,8 +9,6 @@
 #include "log.hpp"
 #include "config.h"
 
-#include <iostream>
-
 int main(int argc, char **argv)
 {
     BUNJI_INF("ml_library version {}.{}", ml_library_VERSION_MAJOR, ml_library_VERSION_MINOR);

@@ -1,7 +1,5 @@
 #include "network.hpp"
 
-#include <iostream>
-
 namespace bunji
 {
 

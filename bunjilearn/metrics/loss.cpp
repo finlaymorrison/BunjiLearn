@@ -1,6 +1,5 @@
 #include "loss.hpp"
 
-#include <iostream>
 #include <cmath>
 
 namespace bunji

@@ -14,6 +14,6 @@ add_subdirectory(bunjilearn)
 add_subdirectory(third_party/json)
 add_subdirectory(third_party/fmt)
 
-target_link_libraries(ml_library layers model dataset metrics)
+target_link_libraries(ml_library layers model dataset metrics util)
 
 target_include_directories(ml_library PUBLIC ${PROJECT_BINARY_DIR})

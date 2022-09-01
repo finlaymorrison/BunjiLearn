@@ -1,7 +1,6 @@
 #include "activation.hpp"
 
 #include <cmath>
-#include <iostream>
 
 namespace bunji
 {

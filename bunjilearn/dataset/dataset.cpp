@@ -6,7 +6,6 @@ using json = nlohmann::json;
 
 #include <fstream>
 #include <array>
-#include <iostream>
 
 namespace bunji
 {
@@ -65,8 +64,6 @@ Dataset::Dataset(const std::string &filepath)
     json js;
     infile >> js;
 
-    BUNJI_DBG("parsing dataset");
-
     std::vector<std::vector<std::vector<std::vector<double>>>> inputs_vec = js["inputs"];
     std::vector<std::vector<std::vector<std::vector<double>>>> outputs_vec = js["outputs"];
 
@@ -78,18 +75,17 @@ Dataset::Dataset(const std::string &filepath)
     int test_len = js["test_len"];
     splits = std::make_pair(train_len, train_len + val_len);
 
-    BUNJI_DBG("verifying dataset");
-
     if (inputs.size() != outputs.size())
     {
         BUNJI_WRN("inputs and outputs are not the same size");
+        return;
     }
     if (train_len + val_len + test_len != inputs.size())
     {
         BUNJI_WRN("incorrect amount of data for all dataset partitions");
+        return;
     }
-
-    BUNJI_DBG("cleanup dataset loading");
+    BUNJI_DBG("dataset successfully loaded, cleaning up");
 }
 
 int Dataset::train_len()
@@ -111,7 +107,7 @@ std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::train(int index)
 {
     if (index >= splits.first)
     {
-        std::cerr << "out of bounds access to training data" << std::endl;
+        BUNJI_WRN("tried to access training sample {}, maximum={}", index, splits.first - 1);
     }
     return std::make_pair(inputs[index],outputs[index]);
 }
@@ -120,7 +116,7 @@ std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::val(int index)
 {
     if (index >= splits.second - splits.first)
     {
-        std::cerr << "out of bounds access to validation data" << std::endl;
+        BUNJI_WRN("tried to access validation sample {}, maximum={}", index, splits.second - splits.first - 1);
     }
     return std::make_pair(inputs[index + splits.first], outputs[index + splits.first]);
 }
@@ -129,7 +125,7 @@ std::pair<Tensor<double, 3>, Tensor<double, 3>> Dataset::test(int index)
 {
     if (index >= inputs.size() - splits.second)
     {
-        std::cerr << "out of bounds access to testing data" << std::endl;
+        BUNJI_WRN("tried to access testing sample {}, maximum={}", index, inputs.size() - splits.second - 1);
     }
     return std::make_pair(inputs[index + splits.second], outputs[index + splits.second]);
 }

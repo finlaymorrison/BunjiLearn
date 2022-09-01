@@ -19,7 +19,7 @@ public:
 
     void apply_gradients(double learn_rate) override;
 
-    void dump_data() override;
+    void dump_data() override {}
 };
 
 } // namespace bunji

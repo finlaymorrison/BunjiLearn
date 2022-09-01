@@ -1,7 +1,7 @@
 #include "dense.hpp"
+#include "log.hpp"
 
 #include <random>
-#include <iostream>
 
 namespace bunji
 {
@@ -59,7 +59,7 @@ Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Ten
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
     {
-        std::cerr << "output size does not match units" << std::endl;
+        BUNJI_WRN("output size ({}) does not match unit count ({})", output_size, units);
         return Tensor<double, 3>({1, 1, 1});
     }
     
@@ -100,20 +100,6 @@ void Dense::apply_gradients(double learn_rate)
         biases[i] -= deriv_biases[i] * learn_rate;
         deriv_biases[i] = 0.0;
     }
-}
-
-void Dense::dump_data()
-{
-    for (int i = 0; i < weights.size(); ++i)
-    {
-        std::cout << i << ":";
-        for (const double weight : weights[i])
-        {
-            std::cout << weight << ",";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
 }
 
 } // namespace bunji
