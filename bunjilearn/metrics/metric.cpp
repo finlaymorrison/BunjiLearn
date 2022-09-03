@@ -1,6 +1,7 @@
 #include "metric.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 namespace bunji
 {

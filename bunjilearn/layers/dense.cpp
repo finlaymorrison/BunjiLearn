@@ -1,7 +1,7 @@
 #include "dense.hpp"
-#include "log.hpp"
 
 #include <random>
+#include <iostream>
 
 namespace bunji
 {
@@ -59,7 +59,7 @@ Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Ten
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
     {
-        BUNJI_WRN("output size ({}) does not match unit count ({})", output_size, units);
+        std::cerr << "output size does not match units" << std::endl;
         return Tensor<double, 3>({1, 1, 1});
     }
     

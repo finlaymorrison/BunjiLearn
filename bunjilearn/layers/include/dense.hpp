@@ -18,8 +18,6 @@ public:
     Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 
     void apply_gradients(double learn_rate) override;
-
-    void dump_data() override {}
 };
 
 } // namespace bunji

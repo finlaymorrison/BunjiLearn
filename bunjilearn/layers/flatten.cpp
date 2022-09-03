@@ -1,5 +1,7 @@
 #include "flatten.hpp"
 
+#include <iostream>
+
 namespace bunji
 {
 

@@ -8,22 +8,12 @@
 #include "flatten.hpp"
 #include "log.hpp"
 #include "config.h"
-#include "progress_bar.hpp"
 
-#include <source_location>
+#include <iostream>
 
 int main(int argc, char **argv)
 {
-    BUNJI_ERR("{}", std::source_location::current().line());
     BUNJI_INF("ml_library version {}.{}", ml_library_VERSION_MAJOR, ml_library_VERSION_MINOR);
-
-    ProgressBar pb(100, 50);
-    for (int i = 0; i < 100; ++i)
-    {
-        pb.set(i);
-        for (volatile int i = 0; i < (1<<24); ++i);
-    }
-    pb.end();
 
     bunji::Dataset dataset("../scripts/dataset.json");
 
