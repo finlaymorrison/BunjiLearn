@@ -11,9 +11,8 @@ private:
 public:
     Activation() = default;
 
-    /* Activation layesr have no parameters */
+    /* Activation layers have no parameters */
     void apply_gradients(double learn_rate) override {}
-    void dump_data() override {}
 };
 
 class ReLU : public Activation

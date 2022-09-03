@@ -11,3 +11,6 @@ add_library(util
     )
 
 target_include_directories(util PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+target_link_libraries(util fmt-header-only)
+

@@ -1,6 +1,5 @@
 #include "trainer.hpp"
-
-#include <iostream>
+#include "log.hpp"
 
 namespace bunji
 {
@@ -45,12 +44,12 @@ void Trainer::fit(int epochs)
     for (int i = 0; i < epochs; ++i)
     {
         std::vector<double> metric_vals = train_pass();
-        std::cout << "Epoch: " << i;
+        BUNJI_PRINT("Epoch: {}", i);
         for (int i = 0; i < metrics.size(); ++i)
         {
-            std::cout << '\t' << metrics[i]->get_name() << ':' << metric_vals[i];
+            BUNJI_PRINT("\t{}:{}", metrics[i]->get_name(), metric_vals[i]);
         }
-        std::cout << std::endl;
+        BUNJI_PRINT("\n");
     }
 }
 

@@ -25,8 +25,6 @@ public:
     Tensor<double, 3> get_activations() const;
 
     virtual void apply_gradients(double learn_rate) = 0;
-
-    virtual void dump_data() = 0;
 };
 
 } // namespace bunji

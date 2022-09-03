@@ -102,18 +102,4 @@ void Dense::apply_gradients(double learn_rate)
     }
 }
 
-void Dense::dump_data()
-{
-    for (int i = 0; i < weights.size(); ++i)
-    {
-        std::cout << i << ":";
-        for (const double weight : weights[i])
-        {
-            std::cout << weight << ",";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-}
-
 } // namespace bunji
