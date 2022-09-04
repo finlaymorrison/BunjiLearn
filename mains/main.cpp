@@ -7,6 +7,7 @@
 #include "metric.hpp"
 #include "flatten.hpp"
 #include "log.hpp"
+#include "tensor.hpp"
 #include "config.h"
 
 #include <iostream>
@@ -15,6 +16,46 @@ int main(int argc, char **argv)
 {
     BUNJI_INF("ml_library version {}.{}", ml_library_VERSION_MAJOR, ml_library_VERSION_MINOR);
 
+    bunji::Tensor<int, 2> tensor({10, 10});
+
+    int index = 0;
+
+    for (auto vector : tensor)
+    {
+        for (auto &value : vector)
+        {
+            value = index++;
+        }
+    }
+    for (auto vector : tensor)
+    {
+        for (auto value : vector)
+        {
+            std::cout << value << std::endl;
+        }
+    }
+
+    /*
+    bunji::Tensor<int, 2>::iterator it_1;
+    for (it_1 = tensor.begin(); it_1 != tensor.end(); ++it_1)
+    {
+        bunji::TensorView<int, 1>::iterator it_2;
+        for (it_2 = (*it_1).begin(); it_2 != (*it_1).end(); ++it_2)
+        {
+            *it_2 = index++;
+        }
+    }
+    for (it_1 = tensor.begin(); it_1 != tensor.end(); ++it_1)
+    {
+        bunji::TensorView<int, 1>::iterator it_2;
+        for (it_2 = (*it_1).begin(); it_2 != (*it_1).end(); ++it_2)
+        {
+            std::cout << *it_2 << std::endl; 
+        }
+    }
+    */
+
+    /*
     bunji::Dataset dataset("../scripts/dataset.json");
 
     bunji::Network network;
@@ -41,6 +82,6 @@ int main(int argc, char **argv)
     bunji::Trainer network_trainer(&network, &dataset, &loss, metrics, 5);
 
     network_trainer.fit(1000000);
-    
+    */
     return 0;
 }
