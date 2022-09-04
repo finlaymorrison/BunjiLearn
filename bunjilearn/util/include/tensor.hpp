@@ -27,6 +27,7 @@ private:
     const std::size_t *offsets;
 
 public:
+    TensorIterator() = default;
     TensorIterator(ValueType *data, const std::size_t *offsets) :
         data(data), offsets(offsets)
     {}
@@ -63,7 +64,7 @@ public:
         }
         else
         {
-            return TensorView<ValueType, DIM>(data, offsets);
+            return TensorView<ValueType, DIM-1>(data, offsets);
         }
     }
 
@@ -93,6 +94,7 @@ private:
     const std::size_t *offsets;
 
 public:
+    ConstTensorIterator() = default;
     ConstTensorIterator(const ValueType *data, const std::size_t *offsets) :
         data(data), offsets(offsets)
     {}
@@ -129,7 +131,7 @@ public:
         }
         else
         {
-            return ConstTensorView<ValueType, DIM>(data, offsets);
+            return ConstTensorView<ValueType, DIM-1>(data, offsets);
         }
     }
 
@@ -183,11 +185,11 @@ public:
 
     iterator begin()
     {
-
+        return iterator{&data[0], &offsets[0]};
     }
     iterator end()
     {
-
+        return iterator{&data[offsets[DIM]], &offsets[0]};
     }
 };
 
@@ -232,11 +234,11 @@ public:
 
     const_iterator cbegin() const
     {
-
+        return const_iterator{&data[0], &offsets[0]};
     }
     const_iterator cend() const
     {
-
+        return const_iterator{&data[offsets[DIM]], &offsets[0]};
     }
 };
 
@@ -274,7 +276,7 @@ public:
         }
         else
         {
-            return TensorView<ValueType, DIM-1>(&data[index*offsets[DIM-1]], &offsets.data()[0]);
+            return TensorView<ValueType, DIM-1>(&data[index*offsets[DIM-1]], &offsets[0]);
         }
     }
     auto operator[] (size_t index) const
@@ -285,7 +287,7 @@ public:
         }
         else
         {
-            return ConstTensorView<ValueType, DIM-1>(&data[index*offsets[DIM-1]], &offsets.data()[0]);
+            return ConstTensorView<ValueType, DIM-1>(&data[index*offsets[DIM-1]], &offsets[0]);
         }
     }
 
@@ -308,19 +310,19 @@ public:
 
     iterator begin()
     {
-
+        return iterator{&data[0], &offsets[0]};
     }
     iterator end()
     {
-
+        return iterator{&data[offsets[DIM]], &offsets[0]};
     }
     const_iterator cbegin() const
     {
-
+        return const_iterator{&data[0], &offsets[0]};
     }
     const_iterator cend() const
     {
-
+        return const_iterator{&data[offsets[DIM]], &offsets[0]};
     }
 };
 
