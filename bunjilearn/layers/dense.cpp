@@ -7,11 +7,11 @@ namespace bunji
 {
 
 Dense::Dense(int units) :
-    units(units)
+    units(units), built(false)
 {}
 
 Dense::Dense(int input, int units) :
-    units(units)
+    units(units), built(false)
 {
     build(1, 1, input);
 }
@@ -39,6 +39,14 @@ void Dense::build(std::size_t x, std::size_t y, std::size_t z)
             weight = dist(gen);
         }
     }
+
+    built = true;
+}
+
+std::tuple<std::size_t, std::size_t, std::size_t> Dense::output_shape()
+{
+    std::size_t unit_count = weights.size();
+    return std::make_tuple(1, 1, unit_count);
 }
 
 Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)

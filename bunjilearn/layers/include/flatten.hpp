@@ -13,6 +13,7 @@ public:
     Flatten();
     Flatten(int d, int h, int w);
     void build(std::size_t x, std::size_t y, std::size_t z) override;
+    std::tuple<std::size_t, std::size_t, std::size_t> output_shape() override;
 
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input);
     Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives);
