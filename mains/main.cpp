@@ -20,10 +20,10 @@ int main(int argc, char **argv)
 
     bunji::Network network;
 
-    bunji::Flatten f0(1, 28, 28);
-    bunji::Dense d0(784, 256);
+    bunji::Flatten f0;
+    bunji::Dense d0(256);
     bunji::Sigmoid a0;
-    bunji::Dense d1(256, 10);
+    bunji::Dense d1(10);
     bunji::Softmax a1;
 
     network.add_layer(&f0);
@@ -31,6 +31,7 @@ int main(int argc, char **argv)
     network.add_layer(&a0);
     network.add_layer(&d1);
     network.add_layer(&a1);
+    network.build(std::make_tuple(1, 28, 28));
 
     bunji::Crossentropy loss;
 

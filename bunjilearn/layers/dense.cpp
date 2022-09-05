@@ -1,17 +1,38 @@
 #include "dense.hpp"
+#include "log.hpp"
 
 #include <random>
-#include <iostream>
 
 namespace bunji
 {
 
-Dense::Dense(int input, int units) :
-    weights(units, std::vector<double>(input,0.0)),
-    deriv_weights(units, std::vector<double>(input,0.0)),
-    biases(units, 0.0),
-    deriv_biases(units, 0.0)
+Dense::Dense(int units) :
+    units(units)
 {
+    built = false;
+}
+
+Dense::Dense(int input, int units) :
+    units(units)
+{
+    built = false;
+    build(std::make_tuple(1, 1, input));
+}
+void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
+{
+    input_shape = set_input_shape;
+    if (std::get<0>(set_input_shape) != 1 || std::get<1>(set_input_shape) != 1)
+    {
+        BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", std::get<0>(set_input_shape), std::get<1>(set_input_shape), std::get<2>(set_input_shape));
+        return;
+    }
+    const int input = std::get<2>(set_input_shape);
+
+    weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
+    deriv_weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
+    biases = std::vector<double>(units, 0.0);
+    deriv_biases = std::vector<double>(units, 0.0);
+    
     std::default_random_engine gen;
     std::uniform_real_distribution<double> dist(-1.0, 1.0);
     
@@ -22,6 +43,10 @@ Dense::Dense(int input, int units) :
             weight = dist(gen);
         }
     }
+
+    output_shape = std::make_tuple(1, 1, units);
+    
+    built = true;
 }
 
 Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)
@@ -59,7 +84,7 @@ Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Ten
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
     {
-        std::cerr << "output size does not match units" << std::endl;
+        BUNJI_WRN("output size {} does not match unit count {}", output_size, units);
         return Tensor<double, 3>({1, 1, 1});
     }
     

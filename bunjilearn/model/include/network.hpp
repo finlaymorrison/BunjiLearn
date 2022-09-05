@@ -19,6 +19,7 @@ public:
     void apply_gradients(double learn_rate);
 
     void add_layer(Layer *layer);
+    void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
 };
 
 } // namespace bunji
