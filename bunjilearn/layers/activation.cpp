@@ -7,24 +7,25 @@ namespace bunji
 {
 
 Activation::Activation() :
-    x(0), y(0), z(0), built(false)
-{}
-
-Activation::Activation(std::size_t x, std::size_t y, std::size_t z) :
-    x(x), y(y), z(z), built(false)
-{}
-
-void Activation::build(std::size_t xn, std::size_t yn, std::size_t zn)
+    x(0), y(0), z(0)
 {
-    x = xn;
-    y = yn;
-    z = zn;
-    built = true;
+    built = false;
 }
 
-std::tuple<std::size_t, std::size_t, std::size_t> Activation::output_shape()
+Activation::Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
-    return std::make_tuple(x, y, z);
+    built = false;
+    build(set_input_shape);
+}
+
+void Activation::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
+{
+    input_shape = set_input_shape;
+    x = std::get<0>(set_input_shape);
+    y = std::get<1>(set_input_shape);
+    z = std::get<2>(set_input_shape);
+    output_shape = std::make_tuple(x, y, z);
+    built = true;
 }
 
 Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input)

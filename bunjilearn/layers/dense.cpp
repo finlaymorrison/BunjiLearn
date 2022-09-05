@@ -7,22 +7,26 @@ namespace bunji
 {
 
 Dense::Dense(int units) :
-    units(units), built(false)
-{}
+    units(units)
+{
+    built = false;
+}
 
 Dense::Dense(int input, int units) :
-    units(units), built(false)
+    units(units)
 {
-    build(1, 1, input);
+    built = false;
+    build(std::make_tuple(1, 1, input));
 }
-void Dense::build(std::size_t x, std::size_t y, std::size_t z)
+void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
-    if (x != 1 || y != 1)
+    input_shape = set_input_shape;
+    if (std::get<0>(set_input_shape) != 1 || std::get<1>(set_input_shape) != 1)
     {
-        BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", x, y, z);
+        BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", std::get<0>(set_input_shape), std::get<1>(set_input_shape), std::get<2>(set_input_shape));
         return;
     }
-    const int input = z;
+    const int input = std::get<2>(set_input_shape);
 
     weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
     deriv_weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
@@ -40,13 +44,9 @@ void Dense::build(std::size_t x, std::size_t y, std::size_t z)
         }
     }
 
+    output_shape = std::make_tuple(1, 1, units);
+    
     built = true;
-}
-
-std::tuple<std::size_t, std::size_t, std::size_t> Dense::output_shape()
-{
-    std::size_t unit_count = weights.size();
-    return std::make_tuple(1, 1, unit_count);
 }
 
 Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)

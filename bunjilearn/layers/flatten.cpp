@@ -5,27 +5,26 @@
 namespace bunji
 {
 
-Flatten::Flatten(int d, int h, int w) :
-    built(false)
+Flatten::Flatten(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
-    build(d, h, w);
+    built = false;
+    build(set_input_shape);
 }
 
 Flatten::Flatten() :
-    d(0), h(0), w(0), built(false)
-{}
-
-void Flatten::build(std::size_t x, std::size_t y, std::size_t z)
+    d(0), h(0), w(0)
 {
-    d = x;
-    h = y;
-    w = z;
-    built = true;
+    built = false;
 }
 
-std::tuple<std::size_t, std::size_t, std::size_t> Flatten::output_shape()
+void Flatten::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
-    return std::make_tuple(1, 1, d * h * w);
+    input_shape = set_input_shape;
+    d = std::get<0>(set_input_shape);
+    h = std::get<1>(set_input_shape);
+    w = std::get<2>(set_input_shape);
+    output_shape = std::make_tuple(1, 1, d * h * w);
+    built = true;
 }
 
 Tensor<double, 3> Flatten::forward_pass(const Tensor<double, 3> &input)

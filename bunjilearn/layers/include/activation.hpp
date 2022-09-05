@@ -12,9 +12,8 @@ protected:
     std::size_t x, y, z;
 public:
     Activation();
-    Activation(std::size_t x, std::size_t y, std::size_t z);
-    void build(std::size_t x, std::size_t y, std::size_t z) override;
-    std::tuple<std::size_t, std::size_t, std::size_t> output_shape() override;
+    Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
+    void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) override;
 
     /* Activation layers have no parameters */
     void apply_gradients(double learn_rate) override {}
