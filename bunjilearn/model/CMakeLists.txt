@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_BUILD_TYPE Release)
 
-project(model VERSION 1.0)
+project(model)
 add_library(model
     ${PROJECT_SOURCE_DIR}/network.cpp
     ${PROJECT_SOURCE_DIR}/trainer.cpp

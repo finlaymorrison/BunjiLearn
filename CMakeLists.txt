@@ -7,9 +7,10 @@ add_subdirectory(bunjilearn)
 add_subdirectory(third_party/json)
 add_subdirectory(third_party/fmt)
 
-project(ml_library VERSION 1.0)
 configure_file(config.h.in config.h)
 
+project(ml_library)
+get_directory_property(<variable> [DIRECTORY <dir>] <prop-name>)
 add_executable(ml_library ${PROJECT_SOURCE_DIR}/mains/main.cpp)
-target_include_directories(ml_library PUBLIC ${PROJECT_BINARY_DIR})
 target_link_libraries(ml_library bunjilearn)
+target_include_directories(bunjilearn PUBLIC ${PROJECT_BINARY_DIR})

@@ -9,7 +9,9 @@ add_subdirectory(metrics)
 add_subdirectory(model)
 add_subdirectory(util)
 
-project(bunjilearn VERSION 1.0)
+project(bunjilearn)
+set(BUNJILEARN_VERSION_MAJOR 0 CACHE STRING "Major version of bunjilearn library")
+set(BUNJILEARN_VERSION_MINOR 1 CACHE STRING "Minor version of bunjilearn library")
 add_library(bunjilearn
     ${PROJECT_SOURCE_DIR}/empty.cpp
     )

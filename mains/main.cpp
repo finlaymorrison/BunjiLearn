@@ -14,7 +14,7 @@
 
 int main(int argc, char **argv)
 {
-    BUNJI_INF("ml_library version {}.{}", ml_library_VERSION_MAJOR, ml_library_VERSION_MINOR);
+    BUNJI_INF("ml_library version {}.{}", BUNJILEARN_VERSION_MAJOR, BUNJILEARN_VERSION_MINOR);
 
     bunji::Dataset dataset("../scripts/dataset.json");
 

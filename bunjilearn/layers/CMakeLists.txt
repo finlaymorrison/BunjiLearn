@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_BUILD_TYPE Release)
 
-project(layers VERSION 1.0)
+project(layers)
 add_library(layers
     ${PROJECT_SOURCE_DIR}/dense.cpp
     ${PROJECT_SOURCE_DIR}/activation.cpp
