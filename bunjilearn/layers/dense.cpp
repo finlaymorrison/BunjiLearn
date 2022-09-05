@@ -1,17 +1,34 @@
 #include "dense.hpp"
+#include "log.hpp"
 
 #include <random>
-#include <iostream>
 
 namespace bunji
 {
 
+Dense::Dense(int units) :
+    units(units)
+{}
+
 Dense::Dense(int input, int units) :
-    weights(units, std::vector<double>(input,0.0)),
-    deriv_weights(units, std::vector<double>(input,0.0)),
-    biases(units, 0.0),
-    deriv_biases(units, 0.0)
+    units(units)
 {
+    build(1, 1, input);
+}
+void Dense::build(std::size_t x, std::size_t y, std::size_t z)
+{
+    if (x != 1 || y != 1)
+    {
+        BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", x, y, z);
+        return;
+    }
+    const int input = z;
+
+    weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
+    deriv_weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
+    biases = std::vector<double>(units, 0.0);
+    deriv_biases = std::vector<double>(units, 0.0);
+    
     std::default_random_engine gen;
     std::uniform_real_distribution<double> dist(-1.0, 1.0);
     
@@ -59,7 +76,7 @@ Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Ten
     /* checking that the output derivatives are a valid size */
     if (output_size != units)
     {
-        std::cerr << "output size does not match units" << std::endl;
+        BUNJI_WRN("output size {} does not match unit count {}", output_size, units);
         return Tensor<double, 3>({1, 1, 1});
     }
     

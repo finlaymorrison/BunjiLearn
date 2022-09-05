@@ -8,8 +8,12 @@ namespace bunji
 class Activation : public Layer
 {
 private:
+protected:
+    std::size_t x, y, z;
 public:
-    Activation() = default;
+    Activation();
+    Activation(std::size_t x, std::size_t y, std::size_t z);
+    void build(std::size_t x, std::size_t y, std::size_t z) override;
 
     /* Activation layers have no parameters */
     void apply_gradients(double learn_rate) override {}

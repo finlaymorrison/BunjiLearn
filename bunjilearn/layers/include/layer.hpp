@@ -19,6 +19,8 @@ protected:
 public:
     Layer();
 
+    virtual void build(std::size_t x, std::size_t y, std::size_t z) = 0;
+
     virtual Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) = 0;
     virtual Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) = 0;
 

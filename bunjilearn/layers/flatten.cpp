@@ -5,9 +5,21 @@
 namespace bunji
 {
 
-Flatten::Flatten(int d, int h, int w) :
-    d(d), h(h), w(w)
+Flatten::Flatten(int d, int h, int w)
+{
+    build(d, h, w);
+}
+
+Flatten::Flatten() :
+    d(0), h(0), w(0)
 {}
+
+void Flatten::build(std::size_t x, std::size_t y, std::size_t z)
+{
+    d = x;
+    h = y;
+    w = z;
+}
 
 Tensor<double, 3> Flatten::forward_pass(const Tensor<double, 3> &input)
 {
