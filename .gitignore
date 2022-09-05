@@ -1,6 +1,7 @@
 .vscode
 .replit
 *.nix
+.ccls-cache
 build
 scripts/*.json
 train-images.idx3-ubyte
