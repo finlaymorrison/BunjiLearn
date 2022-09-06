@@ -6,13 +6,13 @@
 namespace bunji
 {
 
-Dense::Dense(int units) :
+Dense::Dense(std::size_t units) :
     units(units)
 {
     built = false;
 }
 
-Dense::Dense(int input, int units) :
+Dense::Dense(std::size_t input, std::size_t units) :
     units(units)
 {
     built = false;
@@ -21,22 +21,22 @@ Dense::Dense(int input, int units) :
 void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
     input_shape = set_input_shape;
-    if (std::get<0>(set_input_shape) != 1 || std::get<1>(set_input_shape) != 1)
+    if (std::get<0>(input_shape) != 1 || std::get<1>(input_shape) != 1)
     {
-        BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", std::get<0>(set_input_shape), std::get<1>(set_input_shape), std::get<2>(set_input_shape));
+        BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape));
         return;
     }
-    const int input = std::get<2>(set_input_shape);
+    const std::size_t input = std::get<2>(input_shape);
 
-    weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
-    deriv_weights = std::vector<std::vector<double>>(units, std::vector<double>(input,0.0));
-    biases = std::vector<double>(units, 0.0);
-    deriv_biases = std::vector<double>(units, 0.0);
+    weights = Tensor<double, 2>({units, input});
+    deriv_weights = Tensor<double, 2>({units, input});
+    biases = Tensor<double, 1>({units});
+    deriv_biases = Tensor<double, 1>({units});
     
     std::default_random_engine gen;
     std::uniform_real_distribution<double> dist(-1.0, 1.0);
     
-    for (std::vector<double> &unit_weights : weights)
+    for (auto unit_weights : weights)
     {
         for (double &weight : unit_weights)
         {
@@ -45,7 +45,7 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     }
 
     output_shape = std::make_tuple(1, 1, units);
-    activations = Tensor<double, 3>({1, 1, static_cast<size_t>(units)});
+    activations = Tensor<double, 3>({1, 1, units});
     
     built = true;
 }
