@@ -8,7 +8,7 @@ namespace bunji
 class Flatten : public Layer
 {
 private:
-    int d, h, w;
+    std::size_t x, y, z;
 public:
     Flatten();
     Flatten(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
