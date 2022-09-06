@@ -24,6 +24,7 @@ void Flatten::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_
     h = std::get<1>(set_input_shape);
     w = std::get<2>(set_input_shape);
     output_shape = std::make_tuple(1, 1, d * h * w);
+    activations = Tensor<double, 3>({1, 1, d * h * w});
     built = true;
 }
 

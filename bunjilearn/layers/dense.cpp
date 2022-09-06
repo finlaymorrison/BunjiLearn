@@ -45,6 +45,7 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     }
 
     output_shape = std::make_tuple(1, 1, units);
+    activations = Tensor<double, 3>({1, 1, units});
     
     built = true;
 }
