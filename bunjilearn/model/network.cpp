@@ -49,7 +49,6 @@ void Network::add_layer(Layer *layer)
 void Network::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
     std::tuple<std::size_t, std::size_t, std::size_t> next_input = set_input_shape;
-    BUNJI_ERR("x:{}, y:{}, z:{}", std::get<0>(next_input), std::get<1>(next_input), std::get<2>(next_input));
     for (Layer *layer : layers)
     {
         if (layer->built)
@@ -65,7 +64,6 @@ void Network::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_
             layer->build(next_input);
             next_input = layer->get_output_shape();
         }
-        BUNJI_ERR("x:{}, y:{}, z:{}", std::get<0>(next_input), std::get<1>(next_input), std::get<2>(next_input));
     }
 }
 

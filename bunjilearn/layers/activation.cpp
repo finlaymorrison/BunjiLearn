@@ -25,31 +25,39 @@ void Activation::build(std::tuple<std::size_t, std::size_t, std::size_t> set_inp
     y = std::get<1>(set_input_shape);
     z = std::get<2>(set_input_shape);
     output_shape = std::make_tuple(x, y, z);
+    activations = Tensor<double, 3>({x, y, z});
     built = true;
 }
 
 Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> output({1, 1, inputs});
-
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        output[0][0][i] = std::max(0.0, input[0][0][i]);
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                activations[i][j][k] = std::max(0.0, input[i][j][k]);
+            }
+        }
     }
-
-    activations = output;
-    return output;
+    
+    return activations;
 }
 
 Tensor<double, 3> ReLU::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> input_derivatives({1, 1, inputs});
+    Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
 
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        input_derivatives[0][0][i] = output_derivatives[0][0][i] * (input[0][0][i] > 0) ? 1 : 0;
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                input_derivatives[i][j][k] = output_derivatives[i][j][k] * (input[i][j][k] > 0) ? 1 : 0;
+            }
+        }
     }
 
     return input_derivatives;
@@ -59,26 +67,33 @@ Tensor<double, 3> ReLU::backward_pass(const Tensor<double, 3> &input, const Tens
 
 Tensor<double, 3> Sigmoid::forward_pass(const Tensor<double, 3> &input)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> output({1, 1, inputs});
-
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        output[0][0][i] = 1.0 / (1.0 + std::exp(-input[0][0][i]));
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                activations[i][j][k] = 1.0 / (1.0 + std::exp(-input[i][j][k]));
+            }
+        }
     }
-
-    activations = output;
-    return output;
+    
+    return activations;
 }
 
 Tensor<double, 3> Sigmoid::backward_pass(const Tensor<double, 3> &input, const Tensor <double, 3>&output_derivatives)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> input_derivatives({1, 1, inputs});
+    Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
 
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        input_derivatives[0][0][i] = output_derivatives[0][0][i] * activations[0][0][i] * (1 - activations[0][0][i]);
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                input_derivatives[i][j][k] = output_derivatives[i][j][k] * activations[i][j][k] * (1 - activations[i][j][k]);
+            }
+        }
     }
 
     return input_derivatives;
@@ -88,65 +103,83 @@ Tensor<double, 3> Sigmoid::backward_pass(const Tensor<double, 3> &input, const T
 
 Tensor<double, 3> Tanh::forward_pass(const Tensor<double, 3> &input)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> output({1, 1, inputs});
-
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        output[0][0][i] = std::tanh(input[0][0][i]);
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                activations[i][j][k] = std::tanh(input[i][j][k]);
+            }
+        }
     }
-
-    activations = output;
-    return output;
+    
+    return activations;
 }
 
 Tensor<double, 3> Tanh::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> input_derivatives({1, 1, inputs});
+    Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
 
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        input_derivatives[0][0][i] = output_derivatives[0][0][i] * (1 - activations[0][0][i] * activations[0][0][i]);
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                input_derivatives[i][j][k] = output_derivatives[i][j][k] * (1 - activations[i][j][k] * activations[i][j][k]);
+            }
+        }
     }
 
     return input_derivatives;
 }
 
 
-
+/*
+ * It doesnt really makes sense to use softmax on an input which is more
+ * than 1 dimension, other than potentially trying to estimate many random
+ * variables, and so each vector in the deepest axis will be considered
+ * as a separate random variable.
+ */
 Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> output({1, 1, inputs});
-
-    double sum = 0.0;
-    for (int i = 0; i < inputs; i++)
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        sum += std::exp(input[0][0][i]);
-    }
-    for (int i = 0; i < inputs; i++)
-    {
-        output[0][0][i] = std::exp(input[0][0][i]) / sum;
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        {
+            double sum = 0.0;
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                sum += std::exp(input[i][j][k]);
+            }
+            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            {
+                activations[i][j][k] = std::exp(input[i][j][k]) / sum;
+            }
+        }
     }
 
-    activations = output;
-    return output;
+    return activations;
 }
 
 Tensor<double, 3> Softmax::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    std::size_t inputs = input[0][0].size();
-    Tensor<double, 3> input_derivatives({1, 1, inputs});
-
-    for (int i = 0; i < inputs; i++)
+    Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
+    
+    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
-        for (int j = 0; j < inputs; j++)
+        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
         {
-            input_derivatives[0][0][j] += output_derivatives[0][0][i] * activations[0][0][i] * ((j == i ? 1.0 : 0.0) - activations[0][0][j]);
+            for (std::size_t k = 0; k < std::get<2>(input_shape); k++)
+            {
+                for (std::size_t l = 0; l < std::get<2>(input_shape); l++)
+                {
+                    input_derivatives[i][j][l] += output_derivatives[i][j][k] * activations[i][j][k] * ((l == k ? 1.0 : 0.0) - activations[i][j][l]);
+                }
+            }
         }
     }
-    
 
     return input_derivatives;
 }

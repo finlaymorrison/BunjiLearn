@@ -8,14 +8,14 @@ namespace bunji
 class Dense : public Layer
 {
 private:
-    int units;
-    std::vector<std::vector<double>> weights;
-    std::vector<std::vector<double>> deriv_weights;
-    std::vector<double> biases;
-    std::vector<double> deriv_biases;
+    std::size_t units;
+    Tensor<double, 2> weights;
+    Tensor<double, 2> deriv_weights;
+    Tensor<double, 1> biases;
+    Tensor<double, 1> deriv_biases;
 public:
-    Dense(int units);
-    Dense(int inputs, int units);
+    Dense(std::size_t units);
+    Dense(std::size_t inputs, std::size_t units);
     void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) override;
 
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) override;
