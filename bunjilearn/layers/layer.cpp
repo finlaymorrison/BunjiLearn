@@ -14,7 +14,7 @@ Tensor<double, 3> Layer::get_activations() const
 
 std::tuple<std::size_t, std::size_t, std::size_t> Layer::get_output_shape()
 {
-    return output_shape;
+    return activations.shape();
 }
 std::tuple<std::size_t, std::size_t, std::size_t> Layer::get_input_shape()
 {

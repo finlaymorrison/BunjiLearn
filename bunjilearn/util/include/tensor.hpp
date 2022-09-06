@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <cstddef>
+#include <utility>
+#include <tuple>
 
 namespace bunji
 {
@@ -191,6 +193,15 @@ public:
     {
         return iterator{&data[offsets[DIM]], &offsets[0]};
     }
+
+    auto shape() const
+    {
+        auto make_tuple = [this]<typename I, I... indices>(std::index_sequence<indices...>)
+        {
+            return std::make_tuple((this->offsets[N - indices] / this->offsets[N - indices - 1])...);
+        };
+        return make_tuple(std::make_index_sequence<N>());
+    }
 };
 
 
@@ -239,6 +250,15 @@ public:
     const_iterator cend() const
     {
         return const_iterator{&data[offsets[DIM]], &offsets[0]};
+    }
+
+    auto shape() const
+    {
+        auto make_tuple = [this]<typename I, I... indices>(std::index_sequence<indices...>)
+        {
+            return std::make_tuple((this->offsets[N - indices] / this->offsets[N - indices - 1])...);
+        };
+        return make_tuple(std::make_index_sequence<N>());
     }
 };
 
@@ -323,6 +343,15 @@ public:
     const_iterator cend() const
     {
         return const_iterator{&data[offsets[DIM]], &offsets[0]};
+    }
+
+    auto shape() const
+    {
+        auto make_tuple = [this]<typename I, I... indices>(std::index_sequence<indices...>)
+        {
+            return std::make_tuple((this->offsets[N - indices] / this->offsets[N - indices - 1])...);
+        };
+        return make_tuple(std::make_index_sequence<N>());
     }
 };
 

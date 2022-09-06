@@ -19,7 +19,6 @@ private:
 protected:
     Tensor<double, 3> activations;
     std::tuple<std::size_t, std::size_t, std::size_t> input_shape;
-    std::tuple<std::size_t, std::size_t, std::size_t> output_shape;
 public:
     bool built;
     Layer();

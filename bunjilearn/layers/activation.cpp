@@ -24,7 +24,6 @@ void Activation::build(std::tuple<std::size_t, std::size_t, std::size_t> set_inp
     x = std::get<0>(set_input_shape);
     y = std::get<1>(set_input_shape);
     z = std::get<2>(set_input_shape);
-    output_shape = std::make_tuple(x, y, z);
     activations = Tensor<double, 3>({x, y, z});
     built = true;
 }
