@@ -16,7 +16,7 @@ public:
     void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) override;
 
     /* Activation layers have no parameters */
-    void apply_gradients(double learn_rate) override {}
+    void apply_gradients(__attribute__((unused)) double learn_rate) override {}
 };
 
 class ReLU : public Activation

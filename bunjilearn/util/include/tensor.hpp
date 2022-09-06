@@ -243,11 +243,11 @@ public:
         return offsets[DIM-axis] / offsets[DIM-axis-1];
     }
 
-    const_iterator cbegin() const
+    const_iterator begin() const
     {
         return const_iterator{&data[0], &offsets[0]};
     }
-    const_iterator cend() const
+    const_iterator end() const
     {
         return const_iterator{&data[offsets[DIM]], &offsets[0]};
     }

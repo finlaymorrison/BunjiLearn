@@ -10,7 +10,7 @@ Trainer::Trainer(Network *network, Dataset *dataset, Loss *loss, const std::vect
 
 void Trainer::train_example(const Tensor<double, 3> &input, const Tensor<double, 3> &expected_output)
 {
-    Tensor output = network->forward_pass(input);
+    Tensor<double, 3> output = network->forward_pass(input);
     loss->update(output, expected_output);
     for (Metric *metric : metrics)
     {
@@ -22,7 +22,7 @@ void Trainer::train_example(const Tensor<double, 3> &input, const Tensor<double,
 
 std::vector<double> Trainer::train_pass()
 {
-    for (int i = 0; i < dataset->train_len(); ++i)
+    for (std::size_t i = 0; i < dataset->train_len(); ++i)
     {
         std::pair<Tensor<double, 3>, Tensor<double, 3>> example = dataset->train(i);
         train_example(example.first, example.second);
@@ -31,7 +31,7 @@ std::vector<double> Trainer::train_pass()
 
     std::vector<double> metric_vals(metrics.size());
 
-    for (int i = 0; i < metrics.size(); ++i)
+    for (std::size_t i = 0; i < metrics.size(); ++i)
     {
         metric_vals[i] = metrics[i]->evaluate(dataset->train_len());
     }
@@ -45,7 +45,7 @@ void Trainer::fit(int epochs)
     {
         std::vector<double> metric_vals = train_pass();
         BUNJI_PRINT("Epoch: {}", i);
-        for (int i = 0; i < metrics.size(); ++i)
+        for (std::size_t i = 0; i < metrics.size(); ++i)
         {
             BUNJI_PRINT("\t{}:{}", metrics[i]->get_name(), metric_vals[i]);
         }

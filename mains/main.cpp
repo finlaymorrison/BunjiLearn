@@ -12,9 +12,9 @@
 
 #include <iostream>
 
-int main(int argc, char **argv)
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 {
-    BUNJI_INF("ml_library version {}.{}", BUNJILEARN_VERSION_MAJOR, BUNJILEARN_VERSION_MINOR);
+    BUNJI_INF("bunjilearn version {}.{}", BUNJILEARN_VERSION_MAJOR, BUNJILEARN_VERSION_MINOR);
 
     bunji::Dataset dataset("../scripts/dataset.json");
 

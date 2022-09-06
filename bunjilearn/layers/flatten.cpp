@@ -44,7 +44,7 @@ Tensor<double, 3> Flatten::forward_pass(const Tensor<double, 3> &input)
     return activations;
 }
 
-Tensor<double, 3> Flatten::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
+Tensor<double, 3> Flatten::backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
     Tensor<double, 3> input_derivatives({x, y, z});
 

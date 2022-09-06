@@ -1,6 +1,6 @@
 #include "loss.hpp"
+#include "log.hpp"
 
-#include <iostream>
 #include <cmath>
 
 namespace bunji
@@ -24,11 +24,18 @@ std::string Loss::get_name()
 
 Tensor<double, 3> SquaredError::derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    Tensor<double, 3> derivative({1, 1, output[0][0].size()});
+    const auto &[x, y, z] = output.shape();
+    Tensor<double, 3> derivative({x, y, z});
 
-    for (int i = 0; i < output[0][0].size(); i++)
+    for (std::size_t i = 0; i < x; ++i)
     {
-        derivative[0][0][i] = output[0][0][i] - expected_output[0][0][i];
+        for (std::size_t j = 0; j < y; ++j)
+        {
+            for (std::size_t k = 0; k < z; ++k)
+            {
+                derivative[i][j][k] = output[i][j][k] - expected_output[i][j][k];
+            }
+        }
     }
 
     return derivative;
@@ -36,19 +43,34 @@ Tensor<double, 3> SquaredError::derivative(const Tensor<double, 3> &output, cons
 
 void SquaredError::update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    for (int i = 0; i < output[0][0].size(); ++i)
+    const auto &[x, y, z] = output.shape();
+
+    for (std::size_t i = 0; i < x; ++i)
     {
-        loss += 0.5 * (output[0][0][i] - expected_output[0][0][i]) * (output[0][0][i] - expected_output[0][0][i]);
+        for (std::size_t j = 0; j < y; ++j)
+        {
+            for (std::size_t k = 0; k < z; ++k)
+            {
+                loss += (output[i][j][k] - expected_output[i][j][k]) * (output[i][j][k] - expected_output[i][j][k]);
+            }
+        }
     }
 }
 
 Tensor<double, 3> Crossentropy::derivative(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    Tensor<double, 3> derivative({1, 1, output[0][0].size()});
+    const auto &[x, y, z] = output.shape();
+    Tensor<double, 3> derivative({x, y, z});
     
-    for (int i = 0; i < output[0][0].size(); ++i)
+    for (std::size_t i = 0; i < x; ++i)
     {
-        derivative[0][0][i] = -expected_output[0][0][i]*1/(output[0][0][i]*std::log(2));
+        for (std::size_t j = 0; j < y; ++j)
+        {
+            for (std::size_t k = 0; k < z; ++k)
+            {
+                derivative[i][j][k] = -expected_output[i][j][k]*1/(output[i][j][k]*std::log(2));
+            }
+        }
     }
     
     return derivative;
@@ -56,9 +78,17 @@ Tensor<double, 3> Crossentropy::derivative(const Tensor<double, 3> &output, cons
 
 void Crossentropy::update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    for (int i = 0; i < output[0][0].size(); ++i)
+    const auto &[x, y, z] = output.shape();
+    
+    for (std::size_t i = 0; i < x; ++i)
     {
-        loss -= expected_output[0][0][i] * std::log2(output[0][0][i]);
+        for (std::size_t j = 0; j < y; ++j)
+        {
+            for (std::size_t k = 0; k < z; ++k)
+            {
+                loss -= expected_output[i][j][k] * std::log2(output[i][j][k]);
+            }
+        }
     }
 }
 

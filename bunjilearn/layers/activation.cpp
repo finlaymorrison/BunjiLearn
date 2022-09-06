@@ -44,7 +44,7 @@ Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input)
     return activations;
 }
 
-Tensor<double, 3> ReLU::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
+Tensor<double, 3> ReLU::backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
     Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
 
@@ -54,7 +54,7 @@ Tensor<double, 3> ReLU::backward_pass(const Tensor<double, 3> &input, const Tens
         {
             for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
             {
-                input_derivatives[i][j][k] = output_derivatives[i][j][k] * (input[i][j][k] > 0) ? 1 : 0;
+                input_derivatives[i][j][k] = output_derivatives[i][j][k] && (input[i][j][k] > 0);
             }
         }
     }
@@ -80,7 +80,7 @@ Tensor<double, 3> Sigmoid::forward_pass(const Tensor<double, 3> &input)
     return activations;
 }
 
-Tensor<double, 3> Sigmoid::backward_pass(const Tensor<double, 3> &input, const Tensor <double, 3>&output_derivatives)
+Tensor<double, 3> Sigmoid::backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor <double, 3>&output_derivatives)
 {
     Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
 
@@ -116,7 +116,7 @@ Tensor<double, 3> Tanh::forward_pass(const Tensor<double, 3> &input)
     return activations;
 }
 
-Tensor<double, 3> Tanh::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
+Tensor<double, 3> Tanh::backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
     Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
 
@@ -162,7 +162,7 @@ Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input)
     return activations;
 }
 
-Tensor<double, 3> Softmax::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
+Tensor<double, 3> Softmax::backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
     Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
     

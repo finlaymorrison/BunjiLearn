@@ -1,7 +1,7 @@
 #include "metric.hpp"
+#include "log.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 namespace bunji
 {
@@ -10,30 +10,45 @@ Accuracy::Accuracy() :
     correct(0)
 {}
 
+/*
+ * It doesnt really makes sense to use accuracy on an input which is more
+ * than 1 dimension, other than potentially trying to estimate many random
+ * variables, and so each vector in the deepest axis will be considered
+ * as a separate random variable. If all labels are predicted correctly,
+ * it will be counted as one correct answer.
+ */
 void Accuracy::update(const Tensor<double, 3> &output, const Tensor<double, 3> &expected_output)
 {
-    int max_pred_index = -1;
-    double max_pred_val = -1.0;
-    int max_expt_index = -1;
-    double max_expt_val = -1.0;
-    for (std::size_t i = 0; i < output[0][0].size(); ++i)
+    const auto &[x, y, z] = output.shape();
+    for (std::size_t i = 0; i < x; ++i)
     {
-        if (output[0][0][i] > max_pred_val)
+        for (std::size_t j = 0; j < y; ++j)
         {
-            max_pred_val = output[0][0][i];
-            max_pred_index = i;
-        }
-        if (expected_output[0][0][i] > max_expt_val)
-        {
-            max_expt_val = output[0][0][i];
-            max_expt_index = i;
+            std::size_t max_pred_index{0}, max_expt_index{0};
+            double max_pred_val = -1.0;
+            double max_expt_val = -1.0;
+            for (std::size_t k = 0; k < z; ++k)
+            {
+                if (output[i][j][k] > max_pred_val)
+                {
+                    max_pred_val = output[i][j][k];
+                    max_pred_index = k;
+                }
+                if (expected_output[i][j][k] > max_expt_val)
+                {
+                    max_expt_val = expected_output[i][j][k];
+                    max_expt_index = k;
+                }
+            }
+    
+            if (max_pred_index != max_expt_index)
+            {
+                return;
+            }
         }
     }
     
-    if (max_pred_index == max_expt_index)
-    {
-        ++correct;
-    }
+    ++correct;
 }
 
 double Accuracy::evaluate(int example_count)
