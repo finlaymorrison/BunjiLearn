@@ -45,56 +45,38 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     }
 
     output_shape = std::make_tuple(1, 1, units);
-    activations = Tensor<double, 3>({1, 1, units});
+    activations = Tensor<double, 3>({1, 1, static_cast<size_t>(units)});
     
     built = true;
 }
 
 Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)
 {
-    const std::size_t units = weights.size();
-    const std::size_t input_size = input[0][0].size();
-
-    /* initialize a tensor for the output */
-    Tensor<double, 3> output({1, 1, units});
-
-    for (int i = 0; i < units; ++i)
+    for (std::size_t i = 0; i < units; ++i)
     {
         /* calculate the dot product of the input and weights */
         double sum = 0.0;
-        for (int j = 0; j < input_size; ++j)
+        for (std::size_t j = 0; j < std::get<2>(input_shape); ++j)
         {
             sum += input[0][0][j] * weights[i][j];
         }
         sum += biases[i];
 
         /* add to the output vector */
-        output[0][0][i] = sum;
+        activations[0][0][i] = sum;
     }
 
-    activations = output;
-    return output;
+    return activations;
 }
 
 Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
-{
-    const std::size_t units = weights.size();
-    const std::size_t input_size = input[0][0].size();
-    const std::size_t output_size = output_derivatives[0][0].size();
-
-    /* checking that the output derivatives are a valid size */
-    if (output_size != units)
-    {
-        BUNJI_WRN("output size {} does not match unit count {}", output_size, units);
-        return Tensor<double, 3>({1, 1, 1});
-    }
-    
+{    
     /* initialize a tensor for the output */
-    Tensor<double, 3> deriv_input({1, 1, input_size});
+    Tensor<double, 3> deriv_input({1, 1, std::get<2>(input_shape)});
     
-    for (int i = 0; i < units; ++i)
+    for (std::size_t i = 0; i < units; ++i)
     {
-        for (int j = 0; j < input_size; ++j)
+        for (std::size_t j = 0; j < std::get<2>(input_shape); ++j)
         {
             /* weight derivative calculation */
             deriv_weights[i][j] += input[0][0][j] * output_derivatives[0][0][i];
@@ -112,17 +94,13 @@ Tensor<double, 3> Dense::backward_pass(const Tensor<double, 3> &input, const Ten
 
 void Dense::apply_gradients(double learn_rate)
 {
-    for (int i = 0; i < weights.size(); ++i)
+    for (std::size_t i = 0; i < units; ++i)
     {
-        for (int j = 0; j < weights[i].size(); ++j)
+        for (std::size_t j = 0; j < std::get<2>(input_shape); ++j)
         {
             weights[i][j] -= deriv_weights[i][j] * learn_rate;
             deriv_weights[i][j] = 0.0;
         }
-    }
-
-    for (int i = 0; i < biases.size(); ++i)
-    {
         biases[i] -= deriv_biases[i] * learn_rate;
         deriv_biases[i] = 0.0;
     }
