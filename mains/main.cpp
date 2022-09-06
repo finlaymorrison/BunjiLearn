@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     network.add_layer(&a0);
     network.add_layer(&d1);
     network.add_layer(&a1);
-    network.build(std::make_tuple(1, 28, 28));
+    network.build(std::make_tuple(28, 28, 1));
 
     bunji::Crossentropy loss;
 
