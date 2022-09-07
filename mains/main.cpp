@@ -42,7 +42,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 
     bunji::Trainer network_trainer(&network, &dataset, &loss, metrics, 5);
 
-    network_trainer.fit(1000000);
+    network_trainer.fit(100, 32);
     
     return 0;
 }
