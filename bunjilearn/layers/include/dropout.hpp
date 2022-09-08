@@ -17,7 +17,7 @@ public:
     void initialize() override;
 
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input, bool training) override;
-    Tensor<double, 3> backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
+    Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 
     void apply_gradients(__attribute__((unused)) double learn_rate) override {};
 };

@@ -9,6 +9,7 @@
 #include "log.hpp"
 #include "tensor.hpp"
 #include "dropout.hpp"
+#include "convolution.hpp"
 #include "config.h"
 
 #include <iostream>
@@ -21,21 +22,25 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 
     bunji::Network network;
 
+    bunji::Convolution c0(4, 3, 3, 1, 1);
     bunji::Flatten f0;
-    bunji::Dense d0(256);
     bunji::Sigmoid a0;
+    bunji::Dense d0(256);
+    bunji::Sigmoid a1;
     bunji::Dropout r0(0.6);
     bunji::Dense d1(10);
-    bunji::Softmax a1;
+    bunji::Softmax a2;
 
+    //network.add_layer(&c0);
     network.add_layer(&f0);
+    //network.add_layer(&a0);
     network.add_layer(&d0);
-    network.add_layer(&a0);
+    network.add_layer(&a1);
     network.add_layer(&r0);
     network.add_layer(&d1);
-    network.add_layer(&a1);
+    network.add_layer(&a2);
     network.build(std::make_tuple(28, 28, 1));
-
+    
     bunji::Crossentropy loss;
 
     bunji::Crossentropy loss_metric;
@@ -43,7 +48,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
     
     std::vector<bunji::Metric*> metrics = {&loss_metric, &acc_metric};
 
-    bunji::Trainer network_trainer(&network, &dataset, &loss, metrics, 5);
+    bunji::Trainer network_trainer(&network, &dataset, &loss, metrics, 1);
 
     network_trainer.fit(100, 32);
     

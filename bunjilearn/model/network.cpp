@@ -61,6 +61,7 @@ void Network::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_
         }
         else
         {
+            BUNJI_WRN("({},{},{})", std::get<0>(next_input), std::get<1>(next_input), std::get<2>(next_input));
             layer->build(next_input);
             next_input = layer->get_output_shape();
         }
