@@ -7,27 +7,20 @@ namespace bunji
 {
 
 Dropout::Dropout(double rate) :
-    rate(rate)
-{
-    built = false;
-}
+    Layer(), rate(rate)
+{}
 
 Dropout::Dropout(double rate, std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) :
-    rate(rate)
+    Layer(), rate(rate)
 {
-    built = false;
     build(set_input_shape);
 }
 
-void Dropout::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
+void Dropout::initialize()
 {
-    input_shape = set_input_shape;
-    auto &[x, y, z] = set_input_shape;
-
+    auto &[x, y, z] = input_shape;
     connections = Tensor<char, 3>({x, y, z});
     activations = Tensor<double, 3>({x, y, z});
-
-    built = true;
 }
 
 Tensor<double, 3> Dropout::forward_pass(const Tensor<double, 3> &input, bool training)

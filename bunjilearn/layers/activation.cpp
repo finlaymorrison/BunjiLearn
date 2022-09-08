@@ -7,10 +7,8 @@ namespace bunji
 {
 
 Activation::Activation() :
-    x(0), y(0), z(0)
-{
-    built = false;
-}
+    Layer(), x(0), y(0), z(0)
+{}
 
 Activation::Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
@@ -18,14 +16,12 @@ Activation::Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_inp
     build(set_input_shape);
 }
 
-void Activation::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
+void Activation::initialize()
 {
-    input_shape = set_input_shape;
-    x = std::get<0>(set_input_shape);
-    y = std::get<1>(set_input_shape);
-    z = std::get<2>(set_input_shape);
+    x = std::get<0>(input_shape);
+    y = std::get<1>(input_shape);
+    z = std::get<2>(input_shape);
     activations = Tensor<double, 3>({x, y, z});
-    built = true;
 }
 
 Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)

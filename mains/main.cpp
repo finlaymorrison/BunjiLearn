@@ -17,14 +17,14 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 {
     BUNJI_INF("bunjilearn version {}.{}", BUNJILEARN_VERSION_MAJOR, BUNJILEARN_VERSION_MINOR);
 
-    bunji::Dataset dataset("../scripts/dataset.json");
+    bunji::Dataset dataset("scripts/dataset.json");
 
     bunji::Network network;
 
     bunji::Flatten f0;
     bunji::Dense d0(256);
     bunji::Sigmoid a0;
-    bunji::Dropout r0(0.5);
+    bunji::Dropout r0(0.6);
     bunji::Dense d1(10);
     bunji::Softmax a1;
 

@@ -14,7 +14,7 @@ private:
 public:
     Dropout(double rate);
     Dropout(double rate, std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
-    void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) override;
+    void initialize() override;
 
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input, bool training) override;
     Tensor<double, 3> backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;

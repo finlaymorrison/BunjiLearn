@@ -13,7 +13,7 @@ protected:
 public:
     Activation();
     Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
-    void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) override;
+    void initialize() override;
 
     /* Activation layers have no parameters */
     void apply_gradients(__attribute__((unused)) double learn_rate) override {}

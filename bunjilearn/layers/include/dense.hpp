@@ -16,7 +16,7 @@ private:
 public:
     Dense(std::size_t units);
     Dense(std::size_t inputs, std::size_t units);
-    void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) override;
+    void initialize() override;
 
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input, bool training) override;
     Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;

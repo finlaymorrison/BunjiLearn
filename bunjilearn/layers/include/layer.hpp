@@ -22,8 +22,10 @@ protected:
 public:
     bool built;
     Layer();
+    
+    void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
+    virtual void initialize() = 0;
 
-    virtual void build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape) = 0;
     std::tuple<std::size_t, std::size_t, std::size_t> get_output_shape();
     std::tuple<std::size_t, std::size_t, std::size_t> get_input_shape();
 
