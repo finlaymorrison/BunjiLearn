@@ -7,20 +7,16 @@ namespace bunji
 {
 
 Dense::Dense(std::size_t units) :
-    units(units)
-{
-    built = false;
-}
+    Layer(), units(units)
+{}
 
 Dense::Dense(std::size_t input, std::size_t units) :
-    units(units)
+    Layer(), units(units)
 {
-    built = false;
     build(std::make_tuple(1, 1, input));
 }
-void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
+void Dense::initialize()
 {
-    input_shape = set_input_shape;
     if (std::get<0>(input_shape) != 1 || std::get<1>(input_shape) != 1)
     {
         BUNJI_WRN("cannot build dense layer with input shape ({},{},{})", std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape));
@@ -33,7 +29,8 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     biases = Tensor<double, 1>({units});
     deriv_biases = Tensor<double, 1>({units});
     
-    std::default_random_engine gen;
+    std::random_device rd;
+    std::default_random_engine gen(rd());
     std::uniform_real_distribution<double> dist(-1.0, 1.0);
     
     for (auto unit_weights : weights)
@@ -45,11 +42,9 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     }
 
     activations = Tensor<double, 3>({1, 1, units});
-    
-    built = true;
 }
 
-Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     for (std::size_t i = 0; i < units; ++i)
     {

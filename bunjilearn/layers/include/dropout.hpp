@@ -5,23 +5,21 @@
 namespace bunji
 {
 
-class Dense : public Layer
+class Dropout : public Layer
 {
 private:
-    std::size_t units;
-    Tensor<double, 2> weights;
-    Tensor<double, 2> deriv_weights;
-    Tensor<double, 1> biases;
-    Tensor<double, 1> deriv_biases;
+    std::size_t x, y, z;
+    Tensor<char, 3> connections;
+    double rate;
 public:
-    Dense(std::size_t units);
-    Dense(std::size_t inputs, std::size_t units);
+    Dropout(double rate);
+    Dropout(double rate, std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape);
     void initialize() override;
 
     Tensor<double, 3> forward_pass(const Tensor<double, 3> &input, bool training) override;
     Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) override;
 
-    void apply_gradients(double learn_rate) override;
+    void apply_gradients(__attribute__((unused)) double learn_rate) override {};
 };
 
 } // namespace bunji

@@ -7,10 +7,8 @@ namespace bunji
 {
 
 Activation::Activation() :
-    x(0), y(0), z(0)
-{
-    built = false;
-}
+    Layer(), x(0), y(0), z(0)
+{}
 
 Activation::Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
 {
@@ -18,17 +16,15 @@ Activation::Activation(std::tuple<std::size_t, std::size_t, std::size_t> set_inp
     build(set_input_shape);
 }
 
-void Activation::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_shape)
+void Activation::initialize()
 {
-    input_shape = set_input_shape;
-    x = std::get<0>(set_input_shape);
-    y = std::get<1>(set_input_shape);
-    z = std::get<2>(set_input_shape);
+    x = std::get<0>(input_shape);
+    y = std::get<1>(input_shape);
+    z = std::get<2>(input_shape);
     activations = Tensor<double, 3>({x, y, z});
-    built = true;
 }
 
-Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> ReLU::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
@@ -54,7 +50,7 @@ Tensor<double, 3> ReLU::backward_pass(__attribute__((unused)) const Tensor<doubl
         {
             for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
             {
-                input_derivatives[i][j][k] = output_derivatives[i][j][k] && (input[i][j][k] > 0);
+                input_derivatives[i][j][k] = output_derivatives[i][j][k] * (input[i][j][k] > 0);
             }
         }
     }
@@ -64,7 +60,7 @@ Tensor<double, 3> ReLU::backward_pass(__attribute__((unused)) const Tensor<doubl
 
 
 
-Tensor<double, 3> Sigmoid::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> Sigmoid::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
@@ -100,7 +96,7 @@ Tensor<double, 3> Sigmoid::backward_pass(__attribute__((unused)) const Tensor<do
 
 
 
-Tensor<double, 3> Tanh::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> Tanh::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
@@ -141,7 +137,7 @@ Tensor<double, 3> Tanh::backward_pass(__attribute__((unused)) const Tensor<doubl
  * variables, and so each vector in the deepest axis will be considered
  * as a separate random variable.
  */
-Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
     {
