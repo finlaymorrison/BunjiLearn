@@ -58,7 +58,7 @@ Tensor<double, 3> Convolution::forward_pass(const Tensor<double, 3> &input, __at
         {
             for (std::size_t k = 0; k < y-ky; k += sy)
             {
-                activations[i][j][k] = biases[i];
+                activations[j][k][i] = biases[i];
                 for (std::size_t l = 0; l < kx; ++l)
                 {
                     for (std::size_t m = 0; m < ky; ++m)
@@ -87,15 +87,15 @@ Tensor<double, 3> Convolution::backward_pass(const Tensor<double, 3> &input, con
         {
             for (std::size_t k = 0; k < y-ky; k += sy)
             {
-                deriv_biases[i] += output_derivatives[i][j][k];
+                deriv_biases[i] += output_derivatives[j][k][i];
                 for (std::size_t l = 0; l < kx; ++l)
                 {
                     for (std::size_t m = 0; m < ky; ++m)
                     {
                         for (std::size_t n = 0; n < z; ++n)
                         {
-                            deriv_kernels[i][l][m][n] += output_derivatives[i][j][j] * input[j+l][k+m][n];
-                            input_derivatives[j+l][k+m][n] += output_derivatives[i][j][j] * kernels[i][l][m][n];
+                            deriv_kernels[i][l][m][n] += output_derivatives[j][k][i] * input[j+l][k+m][n];
+                            input_derivatives[j+l][k+m][n] += output_derivatives[j][k][i] * kernels[i][l][m][n];
                         }
                     }
                 }
@@ -107,7 +107,7 @@ Tensor<double, 3> Convolution::backward_pass(const Tensor<double, 3> &input, con
 }
 
 void Convolution::apply_gradients(double learn_rate)
-{
+{    
     for (std::size_t i = 0; i < kernel_count; ++i)
     {
         for (std::size_t j = 0; j < kx; ++j)
@@ -116,11 +116,13 @@ void Convolution::apply_gradients(double learn_rate)
             {
                 for (std::size_t l = 0; l < std::get<2>(input_shape); ++l)
                 {
-                    kernels[i][k][k][l] -= learn_rate * deriv_kernels[i][k][k][l];
+                    kernels[i][j][k][l] -= learn_rate * deriv_kernels[i][j][k][l];
+                    deriv_kernels[i][j][k][l] = 0.0;
                 }
             }
         }
         biases[i] -= learn_rate * deriv_biases[i];
+        deriv_biases[i] = 0.0;
     }
 }
 

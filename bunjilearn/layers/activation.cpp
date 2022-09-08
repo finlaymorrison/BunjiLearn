@@ -50,7 +50,7 @@ Tensor<double, 3> ReLU::backward_pass(__attribute__((unused)) const Tensor<doubl
         {
             for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
             {
-                input_derivatives[i][j][k] = output_derivatives[i][j][k] && (input[i][j][k] > 0);
+                input_derivatives[i][j][k] = output_derivatives[i][j][k] * (input[i][j][k] > 0);
             }
         }
     }
