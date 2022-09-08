@@ -27,7 +27,7 @@ public:
     std::tuple<std::size_t, std::size_t, std::size_t> get_output_shape();
     std::tuple<std::size_t, std::size_t, std::size_t> get_input_shape();
 
-    virtual Tensor<double, 3> forward_pass(const Tensor<double, 3> &input) = 0;
+    virtual Tensor<double, 3> forward_pass(const Tensor<double, 3> &input, bool training) = 0;
     virtual Tensor<double, 3> backward_pass(const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives) = 0;
 
     Tensor<double, 3> get_activations() const;

@@ -33,7 +33,8 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     biases = Tensor<double, 1>({units});
     deriv_biases = Tensor<double, 1>({units});
     
-    std::default_random_engine gen;
+    std::random_device rd;
+    std::default_random_engine gen(rd());
     std::uniform_real_distribution<double> dist(-1.0, 1.0);
     
     for (auto unit_weights : weights)
@@ -49,7 +50,7 @@ void Dense::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_sh
     built = true;
 }
 
-Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> Dense::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     for (std::size_t i = 0; i < units; ++i)
     {

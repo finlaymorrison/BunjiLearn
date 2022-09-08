@@ -10,7 +10,7 @@ Trainer::Trainer(Network *network, Dataset *dataset, Loss *loss, const std::vect
 
 void Trainer::process_example(const Tensor<double, 3> &input, const Tensor<double, 3> &expected_output, bool training)
 {
-    Tensor<double, 3> output = network->forward_pass(input);
+    Tensor<double, 3> output = network->forward_pass(input, training);
 
     for (Metric *metric : metrics)
     {

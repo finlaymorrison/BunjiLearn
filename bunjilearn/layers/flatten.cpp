@@ -27,7 +27,7 @@ void Flatten::build(std::tuple<std::size_t, std::size_t, std::size_t> set_input_
     built = true;
 }
 
-Tensor<double, 3> Flatten::forward_pass(const Tensor<double, 3> &input)
+Tensor<double, 3> Flatten::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
     std::size_t index = 0;
     for (std::size_t i = 0; i < x; ++i)

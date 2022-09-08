@@ -8,6 +8,7 @@
 #include "flatten.hpp"
 #include "log.hpp"
 #include "tensor.hpp"
+#include "dropout.hpp"
 #include "config.h"
 
 #include <iostream>
@@ -23,12 +24,14 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
     bunji::Flatten f0;
     bunji::Dense d0(256);
     bunji::Sigmoid a0;
+    bunji::Dropout r0(0.5);
     bunji::Dense d1(10);
     bunji::Softmax a1;
 
     network.add_layer(&f0);
     network.add_layer(&d0);
     network.add_layer(&a0);
+    network.add_layer(&r0);
     network.add_layer(&d1);
     network.add_layer(&a1);
     network.build(std::make_tuple(28, 28, 1));
