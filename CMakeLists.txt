@@ -13,11 +13,11 @@ project(unit-testing)
 
 enable_testing()
 
-add_executable(unit-tests ${PROJECT_SOURCE_DIR}/mains/tensor_test.cpp)
+add_executable(tensor-tests ${PROJECT_SOURCE_DIR}/mains/tensor_test.cpp)
 
-target_link_libraries(unit-tests gtest bunjilearn)
+target_link_libraries(tensor-tests gtest bunjilearn)
 
 add_test(
-    NAME unit-tests
-    COMMAND unit-tests
+    NAME tensor-tests
+    COMMAND tensor-tests
 )
