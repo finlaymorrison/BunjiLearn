@@ -7,10 +7,17 @@ add_compile_options(-Wall -Wextra -Wpedantic)
 add_subdirectory(bunjilearn)
 add_subdirectory(third_party/json)
 add_subdirectory(third_party/fmt)
+add_subdirectory(third_party/googletest)
 
-configure_file(config.h.in config.h)
+project(unit-testing)
 
-project(ml_library)
-add_executable(ml_library ${PROJECT_SOURCE_DIR}/mains/main.cpp)
-target_link_libraries(ml_library bunjilearn)
-target_include_directories(bunjilearn PUBLIC ${PROJECT_BINARY_DIR})
+enable_testing()
+
+add_executable(unit-tests ${PROJECT_SOURCE_DIR}/mains/tensor_test.cpp)
+
+target_link_libraries(unit-tests gtest bunjilearn)
+
+add_test(
+    NAME unit-tests
+    COMMAND unit-tests
+)
