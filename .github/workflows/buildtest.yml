@@ -15,3 +15,6 @@ jobs:
 
       - name: Build BunjiLearn
         run: bash ./scripts/compile.sh
+
+      - name: Run Tests
+        run: ninja -C build test
