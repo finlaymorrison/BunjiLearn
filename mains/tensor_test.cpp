@@ -1,212 +1,125 @@
 #include "tensor.hpp"
+#include "log.hpp"
 
 #include <gtest/gtest.h>
 
-void test_manual_1d(const std::size_t x)
+#include <array>
+#include <numeric>
+
+template<std::size_t N>
+bool next(std::array<std::size_t, N> &indices, const std::array<std::size_t, N> &dimensions)
 {
-    bunji::Tensor<int, 1> tensor({x});
-
-    for (std::size_t i = 0; i < x; ++i)
+    for (int i = N-1; i >= 0; --i)
     {
-        EXPECT_EQ(tensor[i], 0);
-        tensor[i] = i+1;
+        if (++indices[i] != dimensions[i])
+        {
+            return true;
+        }
+        indices[i] = 0;
     }
+    return false;
+}
 
-    for (std::size_t i = 0; i < x; ++i)
+template<std::size_t N, std::size_t I=0, typename Ty>
+auto &tensor_get(Ty &tensor, const std::array<std::size_t, N> &indices)
+{
+    if constexpr(I == N-1)
     {
-        EXPECT_EQ(tensor[i], i+1);
+        return tensor[indices[I]];
+    }
+    else
+    {
+        auto indexed = tensor[indices[I]];
+        return tensor_get<N, I + 1>(indexed, indices);
     }
 }
 
-void test_auto_1d(const std::size_t x)
+template<typename... Dimensions>
+void test_manual(Dimensions ...dimensions)
 {
-    bunji::Tensor<int, 1> tensor({x});
-
-    int index = 0;
-    for (int &i : tensor)
+    constexpr std::size_t N = sizeof...(Dimensions);
+    
+    std::array<std::size_t, N> indices = {};
+    std::array<std::size_t, N> dimensions_arr = {dimensions ...};
+    bunji::Tensor<int, N> tensor({dimensions ...});
+    
+    do
     {
-        EXPECT_EQ(i, 0);
-        i = ++index;
+        auto &value = tensor_get<N>(tensor, indices);
+        EXPECT_EQ(value, 0);
+        value = std::accumulate(indices.begin(), indices.end(), 1, std::multiplies<int>());
     }
-
-    index = 0;
-    for (const int i : tensor)
+    while (next<N>(indices, dimensions_arr));
+    
+    do
     {
-        EXPECT_EQ(i, ++index);
+        auto value = tensor_get<N>(tensor, indices);
+        auto expected_value = std::accumulate(indices.begin(), indices.end(), 1, std::multiplies<int>());
+        EXPECT_EQ(value, expected_value);
     }
+    while (next<N>(indices, dimensions_arr));
 }
 
-void test_manual_2d(const std::size_t x, const std::size_t y)
+template<std::size_t N, typename Ty>
+void init_check(Ty &value, int &sum)
 {
-    bunji::Tensor<int, 2> tensor({x, y});
-
-    for (std::size_t i = 0; i < x; ++i)
+    if constexpr(N == 0)
     {
-        for (std::size_t j = 0; j < y; ++j)
-        {
-            EXPECT_EQ(tensor[i][j], 0);
-            tensor[i][j] = (i+1) * (j+1);
-        }
+        EXPECT_EQ(value, 0);
+        value = sum++;
     }
-
-    for (std::size_t i = 0; i < x; ++i)
+    else
     {
-        for (std::size_t j = 0; j < y; ++j)
+        if constexpr(N == 1)
         {
-            EXPECT_EQ(tensor[i][j], (i+1) * (j+1));
-        }
-    }
-}
-
-void test_auto_2d(const std::size_t x, const std::size_t y)
-{
-    bunji::Tensor<int, 2> tensor({x, y});
-
-    int index = 0;
-    for (auto v_0 : tensor)
-    {
-        for (int & i : v_0)
-        {
-            EXPECT_EQ(i, 0);
-            i = ++index;
-        }
-    }
-
-    index = 0;
-    for (auto v_0 : tensor)
-    {
-        for (const int i : v_0)
-        {
-            EXPECT_EQ(i, ++index);
-        }
-    }
-}
-
-void test_manual_3d(const std::size_t x, const std::size_t y, const std::size_t z)
-{
-    bunji::Tensor<int, 3> tensor({x, y, z});
-
-    for (std::size_t i = 0; i < x; ++i)
-    {
-        for (std::size_t j = 0; j < y; ++j)
-        {
-            for (std::size_t k = 0; k < z; ++k)
+            for (auto &x : value)
             {
-                EXPECT_EQ(tensor[i][j][k], 0);
-                tensor[i][j][k] = (i+1) * (j+1) * (k+1);
+                init_check<N-1>(x, sum);
             }
         }
-    }
-
-    for (std::size_t i = 0; i < x; ++i)
-    {
-        for (std::size_t j = 0; j < y; ++j)
+        else
         {
-            for (std::size_t k = 0; k < z; ++k)
+            for (auto x : value)
             {
-                EXPECT_EQ(tensor[i][j][k], (i+1) * (j+1) * (k+1));
+                init_check<N-1>(x, sum);
             }
         }
     }
 }
 
-void test_auto_3d(const std::size_t x, const std::size_t y, const std::size_t z)
+template<std::size_t N, typename Ty>
+void read_check(Ty value, int &sum)
 {
-    bunji::Tensor<int, 3> tensor({x, y, z});
-
-    int index = 0;
-    for (auto v_0 : tensor)
+    if constexpr(N == 0)
     {
-        for (auto v_1 : v_0)
-        {
-            for (int & i : v_1)
-            {
-                EXPECT_EQ(i, 0);
-                i = ++index;
-            }
-        }
+        EXPECT_EQ(value, sum++);
     }
-
-    index = 0;
-    for (auto v_0 : tensor)
+    else
     {
-        for (auto v_1 : v_0)
+        for (auto x : value)
         {
-            for (const int i : v_1)
-            {
-                EXPECT_EQ(i, ++index);
-            }
+            read_check<N-1>(x, sum);
         }
     }
 }
 
-void test_manual_4d(const std::size_t x, const std::size_t y, const std::size_t z, const std::size_t v)
+template<typename... Dimensions>
+void test_automatic(Dimensions ...dimensions)
 {
-    bunji::Tensor<int, 4> tensor({x, y, z, v});
+    constexpr std::size_t N = sizeof...(Dimensions);
+    
+    bunji::Tensor<int, N> tensor({dimensions ...});
 
-    for (std::size_t i = 0; i < x; ++i)
+    for (auto x : tensor)
     {
-        for (std::size_t j = 0; j < y; ++j)
-        {
-            for (std::size_t k = 0; k < z; ++k)
-            {
-                for (std::size_t l = 0; l < v; ++l)
-                {
-                    EXPECT_EQ(tensor[i][j][k][l], 0);
-                    tensor[i][j][k][l] = (i+1) * (j+1) * (k+1) * (l+1);
-                }
-            }
-        }
+        int sum = 0;
+        init_check<N-1>(x, sum);   
     }
 
-    for (std::size_t i = 0; i < x; ++i)
+    for (auto x : tensor)
     {
-        for (std::size_t j = 0; j < y; ++j)
-        {
-            for (std::size_t k = 0; k < z; ++k)
-            {
-                for (std::size_t l = 0; l < v; ++l)
-                {
-                    EXPECT_EQ(tensor[i][j][k][l], (i+1) * (j+1) * (k+1) * (l+1));
-                }
-            }
-        }
-    }
-}
-
-void test_auto_4d(const std::size_t x, const std::size_t y, const std::size_t z, const std::size_t v)
-{
-    bunji::Tensor<int, 4> tensor({x, y, z, v});
-
-    int index = 0;
-    for (auto v_0 : tensor)
-    {
-        for (auto v_1 : v_0)
-        {
-            for (auto v_2 : v_1)
-            {
-                for (int & i : v_2)
-                {
-                    EXPECT_EQ(i, 0);
-                    i = ++index;
-                }
-            }
-        }
-    }
-
-    index = 0;
-    for (auto v_0 : tensor)
-    {
-        for (auto v_1 : v_0)
-        {
-            for (auto v_2 : v_1)
-            {
-                for (const int i : v_2)
-                {
-                    EXPECT_EQ(i, ++index);
-                }
-            }
-        }
+        int sum = 0;
+        read_check<N-1>(x, sum);   
     }
 }
 
@@ -232,19 +145,21 @@ void nd_for_loop(std::size_t begin, std::size_t end, Callable &&c)
 
 TEST(tensor, tensor_manual)
 {
-    nd_for_loop<1>(0, 8500, test_manual_1d);
-    nd_for_loop<2>(0, 100, test_manual_2d);
-    nd_for_loop<3>(0, 24, test_manual_3d);
-    nd_for_loop<4>(0, 12, test_manual_4d);
+    nd_for_loop<1>(1, 8500, test_manual<std::size_t>);
+    nd_for_loop<2>(1, 100, test_manual<std::size_t, std::size_t>);
+    nd_for_loop<3>(1, 24, test_manual<std::size_t, std::size_t, std::size_t>);
+    nd_for_loop<4>(1, 12, test_manual<std::size_t, std::size_t, std::size_t, std::size_t>);
 }
+
 
 TEST(tensor, tensor_auto)
 {
-    nd_for_loop<1>(0, 8500, test_auto_1d);
-    nd_for_loop<2>(0, 100, test_auto_2d);
-    nd_for_loop<3>(0, 24, test_auto_3d);
-    nd_for_loop<4>(0, 12, test_auto_4d);
+    nd_for_loop<1>(0, 8500, test_automatic<std::size_t>);
+    nd_for_loop<2>(0, 100, test_automatic<std::size_t, std::size_t>);
+    nd_for_loop<3>(0, 24, test_automatic<std::size_t, std::size_t, std::size_t>);
+    nd_for_loop<4>(0, 12, test_automatic<std::size_t, std::size_t, std::size_t, std::size_t>);
 }
+
 
 int main(int argc, char **argv)
 {
