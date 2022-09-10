@@ -151,18 +151,10 @@ TEST(tensor, tensor_manual)
     nd_for_loop<4>(1, 12, test_manual<std::size_t, std::size_t, std::size_t, std::size_t>);
 }
 
-
 TEST(tensor, tensor_auto)
 {
-    nd_for_loop<1>(0, 8500, test_automatic<std::size_t>);
-    nd_for_loop<2>(0, 100, test_automatic<std::size_t, std::size_t>);
-    nd_for_loop<3>(0, 24, test_automatic<std::size_t, std::size_t, std::size_t>);
-    nd_for_loop<4>(0, 12, test_automatic<std::size_t, std::size_t, std::size_t, std::size_t>);
-}
-
-
-int main(int argc, char **argv)
-{
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    nd_for_loop<1>(1, 8500, test_automatic<std::size_t>);
+    nd_for_loop<2>(1, 100, test_automatic<std::size_t, std::size_t>);
+    nd_for_loop<3>(1, 24, test_automatic<std::size_t, std::size_t, std::size_t>);
+    nd_for_loop<4>(1, 12, test_automatic<std::size_t, std::size_t, std::size_t, std::size_t>);
 }

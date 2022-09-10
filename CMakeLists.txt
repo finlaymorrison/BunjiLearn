@@ -9,13 +9,19 @@ add_subdirectory(third_party/json)
 add_subdirectory(third_party/fmt)
 add_subdirectory(third_party/googletest)
 
+configure_file(config.h.in config.h)
+
 project(unit-testing)
+
+add_executable(example ${PROJECT_SOURCE_DIR}/mains/main.cpp)
+target_link_libraries(example bunjilearn)
+target_include_directories(example PRIVATE ${PROJECT_BINARY_DIR})
 
 enable_testing()
 
 add_executable(tensor-tests ${PROJECT_SOURCE_DIR}/mains/tensor_test.cpp)
 
-target_link_libraries(tensor-tests gtest bunjilearn)
+target_link_libraries(tensor-tests gtest gtest_main bunjilearn)
 
 add_test(
     NAME tensor-tests

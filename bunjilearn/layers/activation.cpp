@@ -130,7 +130,6 @@ Tensor<double, 3> Tanh::backward_pass(__attribute__((unused)) const Tensor<doubl
     return input_derivatives;
 }
 
-
 /*
  * It doesnt really makes sense to use softmax on an input which is more
  * than 1 dimension, other than potentially trying to estimate many random
@@ -139,16 +138,18 @@ Tensor<double, 3> Tanh::backward_pass(__attribute__((unused)) const Tensor<doubl
  */
 Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input, __attribute__((unused)) bool training)
 {
-    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
+    const auto &[x, y, z] = input_shape;
+
+    for (std::size_t i = 0; i < x; ++i)
     {
-        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        for (std::size_t j = 0; j < y; ++j)
         {
             double sum = 0.0;
-            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            for (std::size_t k = 0; k < z; ++k)
             {
                 sum += std::exp(input[i][j][k]);
             }
-            for (std::size_t k = 0; k < std::get<2>(input_shape); ++k)
+            for (std::size_t k = 0; k < z; ++k)
             {
                 activations[i][j][k] = std::exp(input[i][j][k]) / sum;
             }
@@ -160,15 +161,16 @@ Tensor<double, 3> Softmax::forward_pass(const Tensor<double, 3> &input, __attrib
 
 Tensor<double, 3> Softmax::backward_pass(__attribute__((unused)) const Tensor<double, 3> &input, const Tensor<double, 3> &output_derivatives)
 {
-    Tensor<double, 3> input_derivatives({std::get<0>(input_shape), std::get<1>(input_shape), std::get<2>(input_shape)});
-    
-    for (std::size_t i = 0; i < std::get<0>(input_shape); ++i)
+    const auto &[x, y, z] = input_shape;
+    Tensor<double, 3> input_derivatives({x, y, z});
+
+    for (std::size_t i = 0; i < x; ++i)
     {
-        for (std::size_t j = 0; j < std::get<1>(input_shape); ++j)
+        for (std::size_t j = 0; j < y; ++j)
         {
-            for (std::size_t k = 0; k < std::get<2>(input_shape); k++)
+            for (std::size_t k = 0; k < z; k++)
             {
-                for (std::size_t l = 0; l < std::get<2>(input_shape); l++)
+                for (std::size_t l = 0; l < z; l++)
                 {
                     input_derivatives[i][j][l] += output_derivatives[i][j][k] * activations[i][j][k] * ((l == k ? 1.0 : 0.0) - activations[i][j][l]);
                 }

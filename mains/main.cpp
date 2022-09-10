@@ -10,6 +10,7 @@
 #include "tensor.hpp"
 #include "dropout.hpp"
 #include "convolution.hpp"
+#include "pool.hpp"
 #include "config.h"
 
 #include <iostream>
@@ -24,15 +25,17 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 
     bunji::Convolution c0(16, 5, 5, 1, 1);
     bunji::Sigmoid a0;
+    bunji::MaxPool p0(2, 2);
     bunji::Flatten f0;
     bunji::Dense d0(256);
     bunji::Sigmoid a2;
-    bunji::Dropout r0(0.5);
+    bunji::Dropout r0(0.35);
     bunji::Dense d1(10);
     bunji::Softmax a3;
 
     network.add_layer(&c0);
     network.add_layer(&a0);
+    network.add_layer(&p0);
     
     network.add_layer(&f0);
     
