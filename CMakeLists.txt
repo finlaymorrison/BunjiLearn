@@ -4,26 +4,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_BUILD_TYPE Release)
 add_compile_options(-Wall -Wextra -Wpedantic)
 
-add_subdirectory(bunjilearn)
 add_subdirectory(third_party/json)
 add_subdirectory(third_party/fmt)
 add_subdirectory(third_party/googletest)
+add_subdirectory(third_party/pybind11)
+add_subdirectory(bunjilearn)
+add_subdirectory(api)
+add_subdirectory(tests)
 
-configure_file(config.h.in config.h)
+project(bunjilearn)
 
-project(unit-testing)
-
-add_executable(example ${PROJECT_SOURCE_DIR}/mains/main.cpp)
+add_executable(example ${PROJECT_SOURCE_DIR}/main.cpp)
 target_link_libraries(example bunjilearn)
-target_include_directories(example PRIVATE ${PROJECT_BINARY_DIR})
 
 enable_testing()
-
-add_executable(tensor-tests ${PROJECT_SOURCE_DIR}/mains/tensor_test.cpp)
-
-target_link_libraries(tensor-tests gtest gtest_main bunjilearn)
-
-add_test(
-    NAME tensor-tests
-    COMMAND tensor-tests
-)

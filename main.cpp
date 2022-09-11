@@ -11,14 +11,11 @@
 #include "dropout.hpp"
 #include "convolution.hpp"
 #include "pool.hpp"
-#include "config.h"
 
 #include <iostream>
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv)
 {
-    BUNJI_INF("bunjilearn version {}.{}", BUNJILEARN_VERSION_MAJOR, BUNJILEARN_VERSION_MINOR);
-
     bunji::Dataset dataset("scripts/dataset.json");
 
     bunji::Network network;
