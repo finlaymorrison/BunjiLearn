@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(dataset)
-add_library(dataset
+add_library(dataset SHARED
     ${PROJECT_SOURCE_DIR}/dataset.cpp
     )
 target_include_directories(dataset PUBLIC ${PROJECT_SOURCE_DIR}/include)
